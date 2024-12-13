@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins";
+  font-size: 16px;
+}
+h2 {
+  @apply text-xl text-text font-medium mb-[8px];
+}
+form {
+  @apply w-[400px] bg-white p-[16px] rounded-lg;
+}
+label {
+  span {
+    @apply text-sm font-medium text-text inline-block mb-[4px] text-[14px];
+  }
+}
+
+input {
+  @apply w-full bg-bg p-[12px] rounded-md text-text text-[14px] outline-none;
+}
+
+.primary-btn {
+  @apply bg-accent p-[12px] w-full rounded-md text-white font-semibold text-[14px] inline-block mt-[4px] hover:bg-accent-hover hover:duration-150 hover:ease-linear;
+}
+
+.primary-small-btn {
+  @apply primary-btn !w-fit !text-xs !rounded-md !font-[400] !p-[8px];
+}
+
+table {
+  @apply w-full mt-[16px] border-separate text-left;
+
+  tr {
+    th,
+    td {
+      @apply p-[8px];
+    }
+
+    th {
+      @apply bg-text text-white text-sm font-[500] rounded-md;
+    }
+  }
+}
+
+@layer utilities {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #5d5d5d; /* Gray 600 */
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #888888; /* Gray 400 */
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #d1d1d1; /* Gray 200 */
+  }
+}
