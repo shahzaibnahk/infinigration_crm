@@ -11,7 +11,6 @@ const store = configureStore({
   },
 });
 
-// export const server = "http://localhost:4000/api/v1";
-export const server = "http://31.220.18.246:5000/api/v1";
+export const server = import.meta.env.VITE_BACKEND_SERVER_URL;
 
 export default store;
