@@ -29,5 +29,10 @@ app.get("/", (req, res) => {
   res.send(`Backend Working`);
 });
 
+import userRouter from "./routes/userRoutes.js";
+import marketingRouter from "./routes/marketingRoutes.js";
+app.use("/api/v1", userRouter);
+app.use("/api/v1", marketingRouter);
+
 app.use(ErrorMiddleware);
 export default app;

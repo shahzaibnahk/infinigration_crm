@@ -85,6 +85,23 @@ const schema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+
+  logs: [
+    {
+      date: { type: String },
+
+      activities: [
+        {
+          time: {
+            type: String,
+          },
+          task: {
+            type: String,
+          },
+        },
+      ],
+    },
+  ],
 });
 
 schema.pre("save", async function (next) {

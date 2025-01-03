@@ -1,6 +1,6 @@
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import { User } from "../models/User.js";
-import ErrorHandler from "../utils/errorHandler";
+import ErrorHandler from "../utils/errorHandler.js";
 import { sendToken } from "../utils/sendToken.js";
 
 export const login = catchAsyncError(async (req, res, next) => {
@@ -24,8 +24,6 @@ export const login = catchAsyncError(async (req, res, next) => {
 
   sendToken(res, user, `Welcome Back ${user.name}`, 200);
 });
-
-export const register = catchAsyncError(async (req, res, next) => {});
 
 export const logout = catchAsyncError(async (req, res, next) => {
   res
@@ -54,7 +52,7 @@ export const register = catchAsyncError(async (req, res, next) => {
     gender,
     dob,
     maritalStatus,
-    relegion,
+    religion,
     nationality,
     jobTitle,
     role,
@@ -71,13 +69,13 @@ export const register = catchAsyncError(async (req, res, next) => {
     !gender ||
     !dob ||
     !maritalStatus ||
-    !relegion ||
+    !religion ||
     !nationality ||
     !jobTitle ||
     !role ||
     !salary
   ) {
-    return next(new ErrorHandler("Please enter all feilds", 401));
+    return next(new ErrorHandler("Please enter all fields", 401));
   }
 
   let user = await User.findOne({ email: email });
@@ -143,5 +141,27 @@ export const deleteUser = catchAsyncError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "User deleted successfully",
+  });
+});
+
+export const getMyProfile = catchAsyncError(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
+export const changePassword = catchAsyncError(async (req, res, next) => {
+  const { id } = req.params;
+  const { password } = req.body;
+  const user = await User.findById(id).select("+password");
+  user.password = password;
+
+  await user.save();
+  res.status(200).json({
+    success: true,
+    message: "Password changed successfully",
   });
 });
