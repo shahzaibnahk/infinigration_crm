@@ -16,7 +16,7 @@ import Loading from "./pages/Loading"
 
 const App = () => {
   const { isAuthenticated, user, loading, message, error } = useSelector(state => state.user)
-  const { loading: leadLoading} = useSelector(state => state.lead)
+  const { loading: leadLoading } = useSelector(state => state.lead)
   const dispatch = useDispatch()
   const lenis = useLenis(({ scroll }) => {
     // called every scroll
@@ -37,7 +37,7 @@ const App = () => {
     }
   }, [message, error])
 
-
+  console.log(import.meta.env.VITE_BACKEND_SERVER_URL)
 
   return (
     loading ? <Loading /> :
