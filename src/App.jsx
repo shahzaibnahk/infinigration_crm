@@ -5,24 +5,56 @@ import { routes } from "./routes/marketing"
 import Sidebar from "./components/Sidebar"
 import { marketingRoutes } from "./routes/sidebar"
 import { ReactLenis, useLenis } from '@studio-freight/react-lenis'
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import { useAlert } from "./hooks/userAlert"
+import { getMyProfile } from "./redux/actions/user"
+import toast, { Toaster } from "react-hot-toast"
+import ProtectedRoute from "./components/ProtectedRoute"
+import { redirectUser } from "./utils/redirects"
+import Loading from "./pages/Loading"
 
 const App = () => {
+  const { isAuthenticated, user, loading, message, error } = useSelector(state => state.user)
+  const { loading: leadLoading} = useSelector(state => state.lead)
+  const dispatch = useDispatch()
   const lenis = useLenis(({ scroll }) => {
     // called every scroll
   })
 
+  useEffect(() => {
+    dispatch(getMyProfile())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (message) {
+      toast.success(message)
+      dispatch({ type: "clearMessage" })
+    }
+    if (error) {
+      toast.error(error)
+      dispatch({ type: "clearError" })
+    }
+  }, [message, error])
+
+
+
   return (
-    <ReactLenis root>
-      <Router>
-        <Routes>
-          {authRoutes.map((r, index) => <Route key={index} path={r.path} element={<r.element />} />)}
-          {routes.map((r, index) => <Route key={index} path={r.path} element={<Sidebar component={r.element} routes={marketingRoutes} pageTitle={r.title} />} />)}
+    loading ? <Loading /> :
+      <ReactLenis root>
+        <Router>
+          <Routes>
+            {authRoutes.map((r, index) => <Route key={index} path={r.path} element={<ProtectedRoute isAuthenticated={!isAuthenticated} redirect={redirectUser(isAuthenticated, user)}>
+              <r.element />
+            </ProtectedRoute>} />)}
 
-
-
-        </Routes>
-      </Router>
-    </ReactLenis>
+            {routes.map((r, index) => <Route key={index} path={r.path} element={<ProtectedRoute isAuthenticated={isAuthenticated && user.role === "marketing"} redirect={"/"}>
+              <Sidebar isAuthenticated={isAuthenticated} user={user} component={r.element} routes={marketingRoutes} pageTitle={r.title} />
+            </ProtectedRoute>} />)}
+          </Routes>
+        </Router>
+        <Toaster />
+      </ReactLenis>
   )
 }
 

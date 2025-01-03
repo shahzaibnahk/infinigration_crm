@@ -9,14 +9,14 @@ import {
 
 ChartJS.register(DoughnutController, ArcElement, Tooltip, Legend);
 
-const LeadSourcesDoughntChart = () => {
+const LeadSourcesDoughntChart = ({ doughntChartData }) => {
 
     const data = {
-        labels: ['Facebook', 'Instagram', 'Other'], // Update labels as needed
+        labels: doughntChartData?.labels, // Update labels as needed
         datasets: [
             {
                 label: 'Sources of Leads',
-                data: [300, 200, 100], // Replace with actual data
+                data: doughntChartData?.datasets[0]?.data, // Replace with actual data
                 backgroundColor: [
                     'rgba(59, 89, 152, 0.7)', // Facebook color
                     'rgba(131, 58, 180, 0.7)', // Instagram color

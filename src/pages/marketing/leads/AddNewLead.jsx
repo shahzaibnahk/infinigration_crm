@@ -1,29 +1,59 @@
 import Dropzone from 'react-dropzone'
 import { RiUploadCloud2Line } from "react-icons/ri";
 import Select from "react-select"
-import { styles } from '../../../select/styles';
+import { phoneButtonStyles, phoneInputStyles, styles } from '../../../select/styles';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createLead } from '../../../redux/actions/lead';
+import { useAlert } from '../../../hooks/userAlert';
+import Loading from '../../Loading';
+import { sourceOptions } from '../../../select/options';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 const AddNewLead = () => {
-    return (
-        <div className='w-full grid grid-cols-2 gap-[16px]'>
+    const { loading, error, message } = useSelector(state => state.lead)
+    const alert = useAlert()
+    const [name, setName] = useState("")
+    const [city, setCity] = useState("")
+    const [phone, setPhone] = useState("")
+    const [campaign, setCampaign] = useState({ value: "facebook", label: "Facebook" })
+    const dispatch = useDispatch()
 
-            <form action="" className='!w-full flex flex-col gap-[4px]'>
+    const submitHandler = (e) => {
+        e.preventDefault()
+        dispatch(createLead(name, city, phone, campaign.value))
+    }
+
+    useEffect(() => {
+        alert(message, error, "/marketing/leads/fresh")
+    }, [error, message])
+
+    return (
+
+        loading ? <Loading /> : <div className='w-full grid grid-cols-2 gap-[16px]'>
+            <form onSubmit={submitHandler} action="" className='!w-full flex flex-col gap-[4px]'>
                 <label htmlFor="">
                     <span>Name</span>
-                    <input type="text" placeholder='Enter Name' />
+                    <input value={name} onChange={(e) => setName(e.target.value)} type="text" placeholder='Enter Name' />
                 </label>
                 <label htmlFor="">
                     <span>City</span>
-                    <input type="text" placeholder='Enter City' />
+                    <input value={city} onChange={(e) => setCity(e.target.value)} type="text" placeholder='Enter City' />
                 </label>
 
                 <label htmlFor="">
                     <span>Phone</span>
-                    <input type="text" placeholder='Enter Phone' />
+                    <PhoneInput
+                        value={phone}
+                        onChange={(e) => setPhone(e)}
+                        inputStyle={phoneInputStyles}
+                        buttonStyle={phoneButtonStyles}
+                    />
                 </label>
 
                 <label htmlFor="">
-                    <span>Campaign</span>
-                    <Select styles={styles} placeholder='Enter Campaign' />
+                    <span>Source</span>
+                    <Select value={campaign} onChange={setCampaign} options={sourceOptions} styles={styles} placeholder='Choose Source' />
                 </label>
 
                 <button className='primary-btn'>Submit</button>

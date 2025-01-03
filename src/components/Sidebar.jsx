@@ -3,8 +3,9 @@ import { MdOutlineExpandMore } from "react-icons/md";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { assets } from "../utils/assets";
+import { assets, generateProfilePicture } from "../utils/assets";
 import { useState } from "react";
+import { logout } from "../redux/actions/user";
 
 
 const Sidebar = ({
@@ -12,20 +13,23 @@ const Sidebar = ({
     component: Component,
     pageTitle,
     isAuthenticated,
+    user,
 }) => {
-    // const { user } = useSelector((state) => state.auth);
     const [expandedRoute, setExpandedRoute] = useState(null);
     const location = useLocation();
 
     const handleExpandClick = (title) => {
         setExpandedRoute(expandedRoute === title ? null : title);
     };
+    const dispatch = useDispatch()
 
 
     const logoutHandler = (e) => {
         e.preventDefault();
-        // dispatch(logout());
+        dispatch(logout());
     };
+
+
 
     return (
         <section className="w-full min-h-screen bg-bg p-[20px]">
@@ -35,7 +39,7 @@ const Sidebar = ({
                     <div>
                         <div className="profile-container flex flex-col items-center border-b pb-[16px] mb-[16px]">
                             <img
-                                src="https://placehold.co/120x120"
+                                src={generateProfilePicture(isAuthenticated, user)}
                                 alt=""
                                 className="w-[120px] h-[120px] bg-zinc-400 rounded-full mb-[5px] object-cover"
                             />
@@ -108,9 +112,7 @@ const Sidebar = ({
                     <div className="flex items-center justify-between logout-container">
                         <div className="flex items-center gap-[8px]">
                             <img
-                                src={
-                                    "https://placehold.co/56x56"
-                                }
+                                src={generateProfilePicture(isAuthenticated, user)}
                                 alt=""
                                 className="rounded-full object-cover object-center w-[56px] h-[56px]"
                             />
@@ -141,7 +143,7 @@ const Sidebar = ({
 
                             <IoIosNotificationsOutline className="text-3xl" />
                             <img
-                                src={"https://placehold.co/48x48"}
+                                src={generateProfilePicture(isAuthenticated, user)}
                                 alt=""
                                 className="w-[48px] h-[48px] object-cover object-top bg-zinc-50 rounded-full"
                             />
@@ -150,7 +152,7 @@ const Sidebar = ({
                     </div>
 
                     <div className="component">
-                        <Component />
+                        <Component isAuthenticated={isAuthenticated} user={user} />
                     </div>
                 </div>
             </div>
