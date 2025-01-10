@@ -5,7 +5,7 @@ export const styles = {
     backgroundColor: "#EFEFEF", // Set background color
     padding: "4px", // Adjust padding
     boxShadow: "none",
-    fontSize: "14px", // Remove box shadow
+    fontSize: "12px", // Remove box shadow
     outline: state.isFocused ? "none" : baseStyles.outline, // Remove outline when focused
     "&:hover": {
       borderColor: "transparent", // Ensure no border color on hover
@@ -18,9 +18,9 @@ export const bgWhiteStyles = {
     ...baseStyles,
     borderColor: "transparent", // Remove border color
     backgroundColor: "#FFFFFF", // Set background color
-    padding: "4px", // Adjust padding
+    padding: "3px", // Adjust padding
     boxShadow: "none",
-    fontSize: "14px", // Remove box shadow
+    fontSize: "12px", // Remove box shadow
     outline: state.isFocused ? "none" : baseStyles.outline, // Remove outline when focused
     "&:hover": {
       borderColor: "transparent", // Ensure no border color on hover
@@ -35,7 +35,7 @@ export const phoneInputStyles = {
   border: "none",
   outline: "none",
   fontFamily: "Poppins",
-  fontSize: "14px",
+  fontSize: "12px",
   borderRadius: "4px",
 };
 

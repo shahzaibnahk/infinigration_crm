@@ -14,8 +14,21 @@ export const leadReducer = createReducer(
     createLeadFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
-      },
-    
+    },
+
+    bulkUploadLeadsRequest: (state) => {
+      state.loading = true;
+    },
+    bulkUploadLeadsSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+
+    bulkUploadLeadsFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     getAllLeadsRequest: (state) => {
       state.loading = true;
     },
@@ -63,6 +76,19 @@ export const leadReducer = createReducer(
     },
 
     deleteLeadFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    assignLeadsRequest: (state) => {
+      state.loading = true;
+    },
+    assignLeadsSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+
+    assignLeadsFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

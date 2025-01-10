@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { userReducer } from "./reducers/userReducer";
 import { leadReducer } from "./reducers/leadReducer";
 import { statsReducer } from "./reducers/statsReducer";
+import { departmentsReducer } from "./reducers/departmentReducer";
 
 const store = configureStore({
   reducer: {
     user: userReducer,
     lead: leadReducer,
     stats: statsReducer,
+    department: departmentsReducer,
   },
 });
 

@@ -18,11 +18,31 @@ export const createLead = (name, city, phone, source) => async (dispatch) => {
   }
 };
 
-export const getAllLeads = (date) => async (dispatch) => {
+export const bulkUploadLead = (leads) => async (dispatch) => {
+  dispatch({ type: "bulkUploadLeadsRequest" });
+  try {
+    let { data } = await axios.post(
+      `${server}/bulk-upload-leads`,
+      { leads },
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+    dispatch({ type: "bulkUploadLeadsSuccess", payload: data });
+  } catch (error) {
+    dispatch({
+      type: "bulkUploadLeadsFail",
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const getAllLeads = (date, filter) => async (dispatch) => {
   dispatch({ type: "getAllLeadsRequest" });
   try {
     let { data } = await axios.get(
-      `${server}/leads?date=${date}`,
+      `${server}/leads?date=${date}&filter=${filter}`,
 
       {
         headers: { "Content-Type": "application/json" },
@@ -87,5 +107,23 @@ export const deleteLead = (id) => async (dispatch) => {
     dispatch({ type: "deleteLeadSuccess", payload: data });
   } catch (error) {
     dispatch({ type: "deleteLeadFail", payload: error.response.data.message });
+  }
+};
+
+export const assignLeads = (leads, employee) => async (dispatch) => {
+  dispatch({ type: "assignLeadsRequest" });
+  try {
+    let { data } = await axios.put(
+      `${server}/assign-leads`,
+      { leads, employee },
+
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+    dispatch({ type: "assignLeadsSuccess", payload: data });
+  } catch (error) {
+    dispatch({ type: "assignLeadsFail", payload: error.response.data.message });
   }
 };
