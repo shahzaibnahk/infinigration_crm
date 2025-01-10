@@ -1,6 +1,8 @@
 import express from "express";
 import { isAuthenticated, isAuthorized } from "../middlewares/auth.js";
 import {
+  assignLeads,
+  bulkUploadLead,
   createLead,
   deleteLead,
   getAllLeads,
@@ -8,6 +10,7 @@ import {
   updateLead,
 } from "../controllers/leadController.js";
 import { getMarketingStats } from "../controllers/statsController.js";
+import { getDepartment } from "../controllers/departmentsController.js";
 
 const router = express.Router();
 
@@ -16,6 +19,13 @@ router.post(
   isAuthenticated,
   isAuthorized("marketing", "admin"),
   createLead
+);
+
+router.post(
+  "/bulk-upload-leads",
+  isAuthenticated,
+  isAuthorized("marketing", "admin"),
+  bulkUploadLead
 );
 
 router.get(
@@ -51,6 +61,20 @@ router.get(
   isAuthenticated,
   isAuthorized("marketing", "admin"),
   getMarketingStats
+);
+
+router.get(
+  "/department/:id",
+  isAuthenticated,
+  isAuthorized("marketing", "admin"),
+  getDepartment
+);
+
+router.put(
+  "/assign-leads",
+  isAuthenticated,
+  isAuthorized("marketing", "admin"),
+  assignLeads
 );
 
 export default router;
