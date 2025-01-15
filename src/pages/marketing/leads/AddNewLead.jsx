@@ -11,6 +11,7 @@ import { sourceOptions } from '../../../select/options';
 import PhoneInput from 'react-phone-input-2';
 import * as XLSX from 'xlsx';
 import 'react-phone-input-2/lib/style.css';
+import moment from 'moment-timezone';
 
 const AddNewLead = () => {
     const { loading, error, message } = useSelector(state => state.lead);
@@ -24,7 +25,7 @@ const AddNewLead = () => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(createLead(name, city, phone, campaign.value));
+        dispatch(createLead(name, city, phone, campaign.value, moment.tz("Asia/Karachi").format("YYYY-MM-DD")));
     };
 
     useEffect(() => {
