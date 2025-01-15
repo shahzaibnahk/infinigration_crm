@@ -29,10 +29,10 @@ export const getLeadById = catchAsyncError(async (req, res, next) => {
 });
 
 export const createLead = catchAsyncError(async (req, res, next) => {
-  const { name, city, phone, source } = req.body;
+  const { name, city, phone, source, date } = req.body;
   const user = await User.findById(req.user._id);
 
-  if (!name || !city || !phone || !source) {
+  if (!name || !city || !phone || !source || !date) {
     return next(new ErrorHandler("Please enter all fields", 400));
   }
 
@@ -41,7 +41,7 @@ export const createLead = catchAsyncError(async (req, res, next) => {
     city,
     phone,
     source,
-    createdAt: today.split("T")[0],
+    createdAt: date,
     createdBy: user._id,
   });
 
