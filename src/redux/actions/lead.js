@@ -1,12 +1,12 @@
 import axios from "axios";
 import { server } from "../store";
 
-export const createLead = (name, city, phone, source) => async (dispatch) => {
+export const createLead = (name, city, phone, source, date) => async (dispatch) => {
   dispatch({ type: "createLeadRequest" });
   try {
     let { data } = await axios.post(
       `${server}/create-lead`,
-      { name, city, phone, source },
+      { name, city, phone, source, date },
       {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
