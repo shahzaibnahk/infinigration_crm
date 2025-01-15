@@ -22,7 +22,7 @@ label {
   }
 }
 
-input {
+input, textarea {
   @apply w-full bg-bg p-[12px] rounded-md text-text text-[14px] outline-none;
 }
 

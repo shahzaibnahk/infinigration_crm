@@ -8,9 +8,6 @@ const ActivityLogs = () => {
 
     let logs = user.logs && user.logs.length > 0 && user.logs.find((l) => l.date.split("T")[0] === today)
 
-
-
-
     return (
         <section>
             <input type="date" className='!bg-white !w-[300px]' />

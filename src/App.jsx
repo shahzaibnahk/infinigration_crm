@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { authRoutes } from "./routes/auth"
 import { routes } from "./routes/marketing"
 import Sidebar from "./components/Sidebar"
-import { marketingRoutes } from "./routes/sidebar"
+import { marketingRoutes, sSalesRoutes } from "./routes/sidebar"
 import { ReactLenis, useLenis } from '@studio-freight/react-lenis'
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
@@ -13,6 +13,7 @@ import toast, { Toaster } from "react-hot-toast"
 import ProtectedRoute from "./components/ProtectedRoute"
 import { redirectUser } from "./utils/redirects"
 import Loading from "./pages/Loading"
+import { salesRoutes } from "./routes/sales"
 
 const App = () => {
   const { isAuthenticated, user, loading, message, error } = useSelector(state => state.user)
@@ -50,6 +51,10 @@ const App = () => {
 
             {routes.map((r, index) => <Route key={index} path={r.path} element={<ProtectedRoute isAuthenticated={isAuthenticated && user.role === "marketing"} redirect={"/"}>
               <Sidebar isAuthenticated={isAuthenticated} user={user} component={r.element} routes={marketingRoutes} pageTitle={r.title} />
+            </ProtectedRoute>} />)}
+
+            {salesRoutes.map((r, index) => <Route key={index} path={r.path} element={<ProtectedRoute isAuthenticated={isAuthenticated && user.role === "sales"} redirect={"/"}>
+              <Sidebar isAuthenticated={isAuthenticated} user={user} component={r.element} routes={sSalesRoutes} pageTitle={r.title} />
             </ProtectedRoute>} />)}
           </Routes>
         </Router>

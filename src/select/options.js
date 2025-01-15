@@ -33,3 +33,12 @@ export const monthOptions = [
   { value: "11", label: "November" },
   { value: "12", label: "December" },
 ];
+
+export const salesFilterTags = [
+  { value: "all", label: "All" },
+  { value: "followups", label: "Followups" },
+  { value: "meeting_scheduled", label: "Meeting Scheduled" },
+  { value: "delayed_clients", label: "Delayed Clients" },
+  { value: "visited", label: "Visited" },
+  { value: "closed", label: "Closed Client" },
+];
