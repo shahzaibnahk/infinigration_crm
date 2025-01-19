@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMarketingStats } from "../../redux/actions/stats";
 import Loading from "../Loading";
+import Attendance from "../../components/Attendance";
 
 const MarketingDashboard = () => {
     const { marketingStats, loading } = useSelector(state => state.stats)
@@ -18,6 +19,7 @@ const MarketingDashboard = () => {
     return (
         loading || !marketingStats ? <Loading /> :
             <section className="">
+                <Attendance />
                 <div className="w-full bg-white p-[16px] rounded-lg h-[150px] flex justify-center items-center">
                     <p className="w-[80%] text-center">
                         <i className="text-2xl">{marketingStats?.quote}</i>

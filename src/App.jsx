@@ -28,7 +28,7 @@ const App = () => {
     dispatch(getMyProfile())
     dispatch(getMyLogs(moment.tz("Asia/Karachi").format("YYYY-MM-DD")))
     dispatch(getMyAttendance(moment.tz("Asia/Karachi").format("YYYY-MM-DD")))
-  }, [dispatch, message])
+  }, [dispatch])
 
   useEffect(() => {
     if (message) {

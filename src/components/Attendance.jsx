@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getMyAttendance, markAttendance } from '../redux/actions/user'
+import { getMyAttendance, getMyProfile, markAttendance } from '../redux/actions/user'
 import moment from 'moment-timezone'
 import { capitalizeWords } from '../utils/utils'
 
@@ -28,7 +28,10 @@ const Attendance = () => {
                         <td>{capitalizeWords(attendance.status)}</td>
                         <td>
                             <div className='actions'>
-                                <button onClick={(e) => { dispatch(markAttendance(attendance._id, moment.tz("Asia/Karachi").format())) }}>Mark Attendance</button>
+                                <button onClick={(e) => {
+                                    dispatch(markAttendance(attendance._id, moment.tz("Asia/Karachi").format()))
+                                    dispatch(getMyProfile())
+                                }}>Mark Attendance</button>
                             </div>
                         </td>
                     </tr>
