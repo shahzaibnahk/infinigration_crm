@@ -47,3 +47,55 @@ export const logout = () => async (dispatch) => {
     dispatch({ type: "logoutFail", payload: error.response.data.message });
   }
 };
+
+export const getMyLogs = (date) => async (dispatch) => {
+  dispatch({ type: "getMyLogsRequest" });
+  try {
+    let { data } = await axios.get(`${server}/my-logs?date=${date}`, {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    });
+
+    dispatch({ type: "getMyLogsSuccess", payload: data });
+  } catch (error) {
+    dispatch({ type: "getMyLogsFail", payload: error.response.data.message });
+  }
+};
+
+export const getMyAttendance = (date) => async (dispatch) => {
+  dispatch({ type: "getMyAttendanceRequest" });
+  try {
+    let { data } = await axios.get(`${server}/my-attendance?date=${date}`, {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    });
+
+    dispatch({ type: "getMyAttendanceSuccess", payload: data });
+  } catch (error) {
+    dispatch({
+      type: "getMyAttendanceFail",
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const markAttendance = (id, date) => async (dispatch) => {
+  dispatch({ type: "markAttendanceRequest" });
+  try {
+    let { data } = await axios.put(
+      `${server}/mark-attendance/${id}?date=${date}`,
+      {},
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+
+    dispatch({ type: "markAttendanceSuccess", payload: data });
+  } catch (error) {
+    dispatch({
+      type: "markAttendanceFail",
+      payload: error.response.data.message,
+    });
+  }
+};

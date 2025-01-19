@@ -8,12 +8,13 @@ import { ReactLenis, useLenis } from '@studio-freight/react-lenis'
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { useAlert } from "./hooks/userAlert"
-import { getMyProfile } from "./redux/actions/user"
+import { getMyAttendance, getMyLogs, getMyProfile } from "./redux/actions/user"
 import toast, { Toaster } from "react-hot-toast"
 import ProtectedRoute from "./components/ProtectedRoute"
 import { redirectUser } from "./utils/redirects"
 import Loading from "./pages/Loading"
 import { salesRoutes } from "./routes/sales"
+import moment from "moment-timezone"
 
 const App = () => {
   const { isAuthenticated, user, loading, message, error } = useSelector(state => state.user)
@@ -25,7 +26,9 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getMyProfile())
-  }, [dispatch])
+    dispatch(getMyLogs(moment.tz("Asia/Karachi").format("YYYY-MM-DD")))
+    dispatch(getMyAttendance(moment.tz("Asia/Karachi").format("YYYY-MM-DD")))
+  }, [dispatch, message])
 
   useEffect(() => {
     if (message) {

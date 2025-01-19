@@ -93,6 +93,118 @@ export const leadReducer = createReducer(
       state.error = action.payload;
     },
 
+    getSalesAssignedLeadsRequest: (state) => {
+      state.loading = true;
+    },
+
+    getSalesAssignedLeadsSuccess: (state, action) => {
+      state.loading = false;
+      state.assignedLeads = action.payload.assignedLeads;
+    },
+
+    getSalesAssignedLeadsFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    getClientProfileRequest: (state) => {
+      state.loading = true;
+    },
+
+    getClientProfileSuccess: (state, action) => {
+      state.loading = false;
+      state.profile = action.payload.profile;
+    },
+
+    getClientProfileFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    bulkReturnRequest: (state) => {
+      state.loading = true;
+    },
+
+    bulkReturnSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+
+    bulkReturnFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    changeLeadStatusBySalesRequest: (state) => {
+      state.loading = true;
+    },
+
+    changeLeadStatusBySalesSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+
+    changeLeadStatusBySalesFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    addRemarkRequest: (state) => {
+      state.loading = true;
+    },
+
+    addRemarkSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+
+    addRemarkFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    updateClientProfileRequest: (state) => {
+      state.loading = true;
+    },
+
+    updateClientProfileSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+
+    updateClientProfileFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+
+    getProfileRemarksRequest: (state) => {
+      state.loading = true;
+    },
+
+    getProfileRemarksSuccess: (state, action) => {
+      state.loading = false;
+      state.remarks = action.payload.remarks;
+    },
+
+    getProfileRemarksFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    submitClientDocumentRequest: (state) => {
+      state.loading = true;
+    },
+
+    submitClientDocumentSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+
+    submitClientDocumentFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     clearMessage: (state) => {
       state.message = null;
     },

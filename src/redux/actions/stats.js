@@ -19,3 +19,22 @@ export const getMarketingStats = () => async (dispatch) => {
     });
   }
 };
+
+export const getSalesStats = (date) => async (dispatch) => {
+  dispatch({ type: "getSalesStatsRequest" });
+  try {
+    let { data } = await axios.get(`${server}/sales/stats?date=${date}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+
+    dispatch({ type: "getSalesStatsSuccess", payload: data });
+  } catch (error) {
+    dispatch({
+      type: "getSalesStatsFail",
+      payload: error.response.data.message,
+    });
+  }
+};

@@ -11,7 +11,6 @@ export const freshLeadsOptions = [
 ];
 
 export const returnedLeadOptions = [
-  { value: "all", label: "All Leads" },
   { value: "not interested", label: "Not Interested" },
   { value: "phone busy", label: "Phone Busy" },
   { value: "no response", label: "No Response" },
@@ -36,9 +35,17 @@ export const monthOptions = [
 
 export const salesFilterTags = [
   { value: "all", label: "All" },
-  { value: "followups", label: "Followups" },
+  { value: "followup", label: "Followups" },
   { value: "meeting_scheduled", label: "Meeting Scheduled" },
-  { value: "delayed_clients", label: "Delayed Clients" },
+  { value: "delayed_client", label: "Delayed Clients" },
+  { value: "visited", label: "Visited" },
+  { value: "closed", label: "Closed Client" },
+];
+
+export const salesStatuses = [
+  { value: "followup", label: "Followups" },
+  { value: "meeting_scheduled", label: "Meeting Scheduled" },
+  { value: "delayed_client", label: "Delayed Clients" },
   { value: "visited", label: "Visited" },
   { value: "closed", label: "Closed Client" },
 ];

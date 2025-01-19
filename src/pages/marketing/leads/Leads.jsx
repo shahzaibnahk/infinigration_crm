@@ -76,7 +76,7 @@ const Leads = () => {
 
     const assignLeadsHandler = (e) => {
         e.preventDefault()
-        dispatch(assignLeads(allSelectedLeads, bulkAssignEmployee.value))
+        dispatch(assignLeads(allSelectedLeads, bulkAssignEmployee.value, moment.tz("Asia/Karachi").format()))
     }
 
     const { department } = useSelector(state => state.department)

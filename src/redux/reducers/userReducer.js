@@ -52,6 +52,48 @@ export const userReducer = createReducer(
       state.user = null;
     },
 
+    getMyLogsRequest: (state) => {
+      state.loading = true;
+    },
+
+    getMyLogsSuccess: (state, action) => {
+      state.loading = false;
+      state.logs = action.payload.logs;
+    },
+    
+    getMyLogsFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    getMyAttendanceRequest: (state) => {
+      state.loading = true;
+    },
+
+    getMyAttendanceSuccess: (state, action) => {
+      state.loading = false;
+      state.attendance = action.payload.attendance;
+    },
+
+    getMyAttendanceFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    markAttendanceRequest: (state) => {
+      state.loading = true;
+    },
+
+    markAttendanceSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+
+    markAttendanceFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     clearMessage: (state) => {
       state.message = null;
     },

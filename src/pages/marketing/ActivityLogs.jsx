@@ -1,16 +1,22 @@
 import moment from 'moment-timezone'
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getMyLogs } from '../../redux/actions/user'
+import Loading from '../Loading'
 
 const ActivityLogs = () => {
     const today = moment.tz("Asia/Karachi").format("YYYY-MM-DD")
-    const { user } = useSelector(state => state.user)
+    const dispatch = useDispatch()
+    const { logs } = useSelector(state => state.user)
 
-    let logs = user.logs && user.logs.length > 0 && user.logs.find((l) => l.date.split("T")[0] === today)
+    console.log(logs)
+    
+
+
 
     return (
         <section>
-            <input type="date" className='!bg-white !w-[300px]' />
+            {/* <input value={today} type="date" className='!bg-white !w-[300px]' /> */}
             <table>
                 <thead>
                     <tr>
@@ -21,7 +27,7 @@ const ActivityLogs = () => {
                 </thead>
 
                 <tbody>
-                    {logs && logs.activities.length > 0 && logs.activities.map((l, index) => <tr key={index}>
+                    {logs && logs?.activities?.length > 0 && logs?.activities?.map((l, index) => <tr key={index}>
                         <td>{logs.date.split("T")[0]}</td>
                         <td>{l.time}</td>
                         <td>{l.task}</td>

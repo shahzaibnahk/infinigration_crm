@@ -3,6 +3,7 @@ import { userReducer } from "./reducers/userReducer";
 import { leadReducer } from "./reducers/leadReducer";
 import { statsReducer } from "./reducers/statsReducer";
 import { departmentsReducer } from "./reducers/departmentReducer";
+import { programReducer } from "./reducers/programReducer";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     lead: leadReducer,
     stats: statsReducer,
     department: departmentsReducer,
+    program: programReducer,
   },
 });
 

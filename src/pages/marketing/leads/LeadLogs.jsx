@@ -28,8 +28,8 @@ const LeadLogs = () => {
                 </thead>
                 <tbody>
                     {lead && lead.logs && lead.logs.map((l, index) => <tr key={index}>
-                        <td>{l.date.split("T")[0]}</td>
-                        <td>{l.date.split("T")[1].split("+")[0]}</td>
+                        <td>{l.date?.split("T")[0]}</td>
+                        <td>{l.date?.split("T")[1].split("+")[0]}</td>
                         <td>
                             <div className='flex items-center gap-[8px]'>
                                 <img className='w-[48px] h-[48px] rounded-full' src={generateProfilePicture(true, l.doneBy)} alt="" />

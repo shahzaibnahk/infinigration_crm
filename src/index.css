@@ -22,7 +22,8 @@ label {
   }
 }
 
-input, textarea {
+input,
+textarea {
   @apply w-full bg-bg p-[12px] rounded-md text-text text-[14px] outline-none;
 }
 
@@ -50,6 +51,14 @@ table {
     th {
       @apply bg-text text-white text-sm font-[500] rounded-md;
     }
+  }
+}
+
+.actions {
+  @apply flex gap-[8px];
+  a,
+  button {
+    @apply w-fit bg-accent text-white px-4  py-[5px] text-sm rounded;
   }
 }
 
