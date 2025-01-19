@@ -56,6 +56,25 @@ const schema = new mongoose.Schema({
     ref: "User",
   },
 
+  leadReturned: {
+    by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+
+    at: {
+      type: String,
+    },
+    
+    reason: {
+      type: String,
+    },
+
+    description: {
+      type: String,
+    },
+  },
+
   logs: [
     {
       date: { type: String },
@@ -68,6 +87,25 @@ const schema = new mongoose.Schema({
       },
     },
   ],
+
+  leadAssignedAt: {
+    type: String,
+  },
+
+  sales: {
+    status: {
+      type: String,
+      enum: [
+        "raw_lead",
+        "followup",
+        "meeting_scheduled",
+        "delayed_client",
+        "visited",
+        "closed_client",
+      ],
+      default: "raw_lead",
+    },
+  },
 
   createdAt: {
     type: String,

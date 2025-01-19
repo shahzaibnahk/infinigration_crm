@@ -1,5 +1,9 @@
-export const addUserLogs = (user, date, task) => {
-  let index = user.logs.findIndex((l) => l.date.toString().split("T")[0] == date.split("T")[0]);
+import { User } from "../models/User.js";
+
+export const addUserLogs = async (user, date, task) => {
+  let index = user.logs.findIndex(
+    (l) => l.date.toString().split("T")[0] == date.split("T")[0]
+  );
 
   if (index == -1) {
     user.logs.push({

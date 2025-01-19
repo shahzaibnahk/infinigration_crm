@@ -134,3 +134,103 @@ export const getMarketingStats = catchAsyncError(async (req, res, next) => {
     marketingStats,
   });
 });
+
+export const getSalesStats = catchAsyncError(async (req, res, next) => {
+  const { date } = req.query; // Date in the format "YYYY-MM-DD"
+  const quote = getUniqueQuote();
+  const userId = req.user._id;
+
+  const [year, month] = date.split("-");
+
+  // Assigned Leads Today
+  const assignedLeadsToday = await Lead.find({
+    createdAt: date,
+    status: "assigned",
+    category: "fresh",
+    assignedTo: userId,
+  });
+
+  // Shuffled Leads Today
+  const shuffledLeadsToday = await Lead.find({
+    createdAt: date,
+    status: "assigned",
+    category: "shuffled",
+    assignedTo: userId,
+  });
+
+  // Returned Leads Today
+  const returnedLeadsToday = await Lead.find({
+    createdAt: date,
+    status: "assigned",
+    category: "returned",
+    assignedTo: userId,
+  });
+
+  // Clients Closed This Month
+  const clientsClosed = await Lead.find({
+    status: "assigned",
+    "sales.status": "closed",
+    assignedTo: userId,
+  });
+
+  const clientsClosedThisMonth = clientsClosed.filter((c) => {
+    const [leadYear, leadMonth] = c.createdAt.split("-");
+    return leadYear === year && leadMonth === month;
+  });
+
+  // Line Chart: Leads Assigned Each Month
+  const monthlyAssignedLeads = await Lead.find({
+    assignedTo: userId,
+    status: "assigned",
+  });
+
+  const lineChartData = Array.from({ length: 12 }, (_, index) => {
+    const targetMonth = (index + 1).toString().padStart(2, "0"); // Months as "01", "02", etc.
+    const count = monthlyAssignedLeads.filter((lead) => {
+      const [leadYear, leadMonth] = lead.createdAt.split("-");
+      return leadYear === year && leadMonth === targetMonth;
+    }).length;
+
+    return {
+      month: new Date(2023, index).toLocaleString("default", { month: "long" }),
+      count,
+    };
+  });
+
+  // Doughnut Chart: Sales Status Distribution
+  const salesStatusData = await Lead.find({
+    assignedTo: userId,
+    status: "assigned",
+  });
+
+  const doughnutChartData = [
+    "raw_lead",
+    "followup",
+    "meeting_scheduled",
+    "delayed_client",
+    "visited",
+    "closed",
+  ].map((status) => {
+    return {
+      status,
+      count: salesStatusData.filter((lead) => lead.sales?.status === status)
+        .length,
+    };
+  });
+
+  // Response
+  res.status(200).json({
+    success: true,
+    salesStats: {
+      assignedLeadsToday: assignedLeadsToday.length,
+      shuffledLeadsToday: shuffledLeadsToday.length,
+      returnedLeadsToday: returnedLeadsToday.length,
+      clientsClosedThisMonth: clientsClosedThisMonth.length,
+      lineChart: lineChartData,
+      doughnutChart: doughnutChartData,
+      absenteesRemainingThisMonth: 0,
+      salaryThisMonth: 0,
+      quote,
+    },
+  });
+});

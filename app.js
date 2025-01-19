@@ -31,8 +31,13 @@ app.get("/", (req, res) => {
 
 import userRouter from "./routes/userRoutes.js";
 import marketingRouter from "./routes/marketingRoutes.js";
+import salesRouter from "./routes/salesRoutes.js";
+import programRoutes from "./routes/programRoutes.js";
+
 app.use("/api/v1", userRouter);
 app.use("/api/v1", marketingRouter);
+app.use("/api/v1", salesRouter);
+app.use("/api/v1", programRoutes);
 
 app.use(ErrorMiddleware);
 export default app;

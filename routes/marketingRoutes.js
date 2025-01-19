@@ -38,7 +38,7 @@ router.get(
 router.get(
   "/lead/:id",
   isAuthenticated,
-  isAuthorized("marketing", "admin"),
+  isAuthorized("marketing", "admin", "sales"),
   getLeadById
 );
 
