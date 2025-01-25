@@ -11,7 +11,7 @@ const Remarks = () => {
     const { id } = useParams()
     useEffect(() => {
         dispatch(getProfileRemarks(id))
-    }, [])
+    }, [id])
     const { remarks, loading, error, message } = useSelector(state => state.lead)
     return (
         loading || !remarks ? <Loading /> : <table>
@@ -38,8 +38,8 @@ const Remarks = () => {
                             </div>
                         </div>
                     </td>
-                    <td>{ r.subject}</td>
-                    <td>{ r.remark}</td>
+                    <td>{r.subject}</td>
+                    <td>{r.remark}</td>
                 </tr>)}
             </tbody>
         </table>

@@ -9,8 +9,7 @@ const ActivityLogs = () => {
     const dispatch = useDispatch()
     const { logs } = useSelector(state => state.user)
 
-    console.log(logs)
-    
+
 
 
 

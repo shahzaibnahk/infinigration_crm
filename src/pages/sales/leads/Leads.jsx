@@ -72,7 +72,7 @@ const Leads = () => {
   };
 
   useEffect(() => {
-    alert(message, error, "/sales/leads");
+    alert(message, error, "/sales/leads/assigned");
   }, [error, message]);
 
   return (

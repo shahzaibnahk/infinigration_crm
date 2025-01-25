@@ -33,7 +33,7 @@ const ClientProfile = ({ id }) => {
         dispatch(getClientProfile(id));
         dispatch(getProgramAsOptions());
 
-        setProgram(programOptions?.find((p) => p.value.toString() === profile?.program.toString()))
+        setProgram(programOptions?.find((p) => p?.value?.toString() === profile?.program?.toString()))
         setName(profile?.name)
         setEmail(profile?.email)
         setCity(profile?.city)

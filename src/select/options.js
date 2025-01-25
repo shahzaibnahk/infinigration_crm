@@ -39,7 +39,7 @@ export const salesFilterTags = [
   { value: "meeting_scheduled", label: "Meeting Scheduled" },
   { value: "delayed_client", label: "Delayed Clients" },
   { value: "visited", label: "Visited" },
-  { value: "closed", label: "Closed Client" },
+  { value: "closed_client", label: "Closed Client" },
 ];
 
 export const salesStatuses = [
@@ -47,5 +47,5 @@ export const salesStatuses = [
   { value: "meeting_scheduled", label: "Meeting Scheduled" },
   { value: "delayed_client", label: "Delayed Clients" },
   { value: "visited", label: "Visited" },
-  { value: "closed", label: "Closed Client" },
+  { value: "closed_client", label: "Closed Client" },
 ];

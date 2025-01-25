@@ -22,10 +22,10 @@ const Attendance = () => {
 
                 <tbody>
                     <tr>
-                        <td>{attendance.date}</td>
+                        <td>{attendance?.date}</td>
                         <td>{"9:00 A.M"}</td>
                         <td>{attendance?.markedAt?.split('T')[1].split("+")[0] || "Not Marked Yet"}</td>
-                        <td>{capitalizeWords(attendance.status)}</td>
+                        <td>{capitalizeWords(attendance?.status)}</td>
                         <td>
                             <div className='actions'>
                                 <button onClick={(e) => {

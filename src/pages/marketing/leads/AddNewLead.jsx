@@ -49,6 +49,7 @@ const AddNewLead = () => {
                 city: row[1],
                 phone: row[2],
                 source: row[3],
+                date: row[4],
             }));
 
             setExcelData(parsedData);
@@ -119,6 +120,7 @@ const AddNewLead = () => {
                                         <th>City</th>
                                         <th>Phone</th>
                                         <th>Source</th>
+                                        <th>Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -128,6 +130,7 @@ const AddNewLead = () => {
                                             <td>{row.city}</td>
                                             <td>{row.phone}</td>
                                             <td>{row.source}</td>
+                                            <td>{row.date}</td>
                                         </tr>
                                     ))}
                                 </tbody>
