@@ -169,7 +169,7 @@ export const getSalesStats = catchAsyncError(async (req, res, next) => {
   // Clients Closed This Month
   const clientsClosed = await Lead.find({
     status: "assigned",
-    "sales.status": "closed",
+    "sales.status": "closed_client",
     assignedTo: userId,
   });
 
@@ -209,7 +209,7 @@ export const getSalesStats = catchAsyncError(async (req, res, next) => {
     "meeting_scheduled",
     "delayed_client",
     "visited",
-    "closed",
+    "closed_client",
   ].map((status) => {
     return {
       status,

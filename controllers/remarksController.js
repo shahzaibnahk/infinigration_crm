@@ -13,7 +13,11 @@ export const createRemark = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Please enter all fields", 401));
   }
   const selectedLead = await Lead.findById(lead);
-  const selectedProfile = await ClientProfile.find({ lead: lead });
+  const selectedProfile = await ClientProfile.findOne({ lead: lead });
+
+  if (!selectedProfile) {
+    return next(new ErrorHandler("Profile Not Found", 404));
+  }
 
   await Remark.create({
     profile: selectedProfile._id,
@@ -23,7 +27,11 @@ export const createRemark = catchAsyncError(async (req, res, next) => {
     author: req.user._id,
   });
 
-  await addUserLogs(user, date, `Remarks added in ${selectedLead.name} profile`);
+  await addUserLogs(
+    user,
+    date,
+    `Remarks added in ${selectedLead.name} profile`
+  );
 
   await user.save();
   selectedLead.logs.push({
@@ -41,8 +49,11 @@ export const createRemark = catchAsyncError(async (req, res, next) => {
 
 export const getProfileRemarks = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  const profile = await ClientProfile.find({ lead: id });
+  const profile = await ClientProfile.findOne({ lead: id });
 
+  if (!profile) {
+    return next(new ErrorHandler("Profile Not Found", 404));
+  }
   const remarks = await Remark.find({ profile: profile._id }).populate(
     "author"
   );

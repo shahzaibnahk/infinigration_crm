@@ -4,6 +4,7 @@ const schema = new mongoose.Schema({
   profile: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "ClientProfile",
+    required: true,
   },
   subject: {
     type: String,

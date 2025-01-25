@@ -12,7 +12,9 @@ const today = moment().tz("Asia/Karachi").format().toString();
 
 export const getAllLeads = catchAsyncError(async (req, res, next) => {
   const { date, filter } = req.query;
-  const leads = await Lead.find({ createdAt: date, category: filter });
+  const leads = await Lead.find({ createdAt: date, category: filter }).populate(
+    "assignedTo"
+  );
   res.status(200).json({
     success: true,
     leads,
@@ -170,53 +172,65 @@ export const assignLeads = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Please enter all fields", 401));
   }
 
-  let selectedEmployee = await User.findById(employee);
+  const selectedEmployee = await User.findById(employee);
   if (!selectedEmployee) {
     return next(new ErrorHandler("Employee not found", 404));
   }
-  leads &&
-    leads.length > 0 &&
-    leads.map(async (l) => {
-      let lead = await Lead.findById(l);
-      if (lead.status === "assigned") {
-        return next(new ErrorHandler("Lead is already assigned", 401));
-      }
 
-      lead.assignedTo = selectedEmployee._id;
-      lead.leadAssignedAt = date;
-      lead.status = "assigned";
+  try {
+    await Promise.all(
+      leads.map(async (l) => {
+        const lead = await Lead.findById(l);
+        if (!lead) {
+          throw new ErrorHandler(`Lead with ID ${l} not found`, 404);
+        }
+        if (lead.status === "assigned" && lead.category === "fresh") {
+          throw new ErrorHandler(`Lead ${l} is already assigned`, 401);
+        }
 
-      lead.logs.push({
-        date: date,
-        doneBy: req.user._id,
-        task: `Lead is assigned to ${selectedEmployee.name}`,
-      });
+        if (lead.status === "assigned" && lead.category === "returned") {
+          lead.category = "shuffled";
+        }
 
-      addUserLogs(
-        req.user,
-        date,
-        `${lead.uid} is assigned to ${selectedEmployee.name}`
-      );
-      await lead.save();
+        lead.assignedTo = selectedEmployee._id;
+        lead.leadAssignedAt = date;
+        lead.status = "assigned";
 
-      await ClientProfile.create({
-        lead: lead._id,
-        name: lead.name,
-        city: lead.city,
-        phone: lead.phone,
-      });
+        lead.logs.push({
+          date: date,
+          doneBy: req.user._id,
+          task: `Lead is assigned to ${selectedEmployee.name}`,
+        });
 
-      lead.logs.push({
-        date: date,
-        doneBy: req.user._id,
-        task: `Client profile created`,
-      });
+        addUserLogs(
+          req.user,
+          date,
+          `${lead.uid} is assigned to ${selectedEmployee.name}`
+        );
+        await lead.save();
+
+        await ClientProfile.create({
+          lead: lead._id,
+          name: lead.name,
+          city: lead.city,
+          phone: lead.phone,
+        });
+
+        lead.logs.push({
+          date: date,
+          doneBy: req.user._id,
+          task: `Client profile created`,
+        });
+      })
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Leads assigned successfully",
     });
-
-  res.status(200).json({
-    success: true,
-    message: "Leads assigned successfully",
-  });
+  } catch (error) {
+    next(error); // Pass any errors to the global error handler
+  }
 });
 
 export const getSalesAssignedLeads = catchAsyncError(async (req, res, next) => {
