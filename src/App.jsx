@@ -25,8 +25,13 @@ const App = () => {
     // called every scroll
   })
   const date = moment.tz("Asia/Karachi").format("YYYY-MM-DD")
+
   useEffect(() => {
     dispatch(getMyProfile())
+  }, [dispatch])
+  
+  useEffect(() => {
+
     if (isAuthenticated) {
       dispatch(getMyAttendance(date))
       dispatch(getMyLogs(date))
