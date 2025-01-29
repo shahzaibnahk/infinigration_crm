@@ -31,6 +31,20 @@ export const statsReducer = createReducer(
       state.error = action.payload;
     },
 
+    getOperationsStatsRequest: (state) => {
+      state.loading = true;
+    },
+
+    getOperationsStatsSuccess: (state, action) => {
+      state.loading = false;
+      state.operationStats = action.payload.operationStats;
+    },
+
+    getOperationsStatsFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     clearError: (state) => {
       state.error = null;
     },

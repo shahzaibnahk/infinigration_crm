@@ -44,7 +44,7 @@ const Sidebar = ({
                                 className="w-[120px] h-[120px] bg-zinc-400 rounded-full mb-[5px] object-cover"
                             />
                             <p className="text-xl font-medium text-black">
-                                Shahzaib Khan
+                                {isAuthenticated && user?.name}
                             </p>
                             {/* <Link className="font-medium text-accent">Edit Profile</Link> */}
                         </div>
@@ -116,7 +116,7 @@ const Sidebar = ({
                                 alt=""
                                 className="rounded-full object-cover object-center w-[56px] h-[56px]"
                             />
-                            <p>Shahzaib Khan</p>
+                            <p>{isAuthenticated && user.name}</p>
                         </div>
 
                         <button onClick={logoutHandler}>
@@ -131,7 +131,7 @@ const Sidebar = ({
                             <p className="text-lg font-medium">{pageTitle}</p>
                         ) : (
                             <p className="text-lg font-medium">
-                                Greetings <span className="text-accent">Shahzaib Khan!</span>
+                                Greetings <span className="text-accent">{user.name}!</span>
                             </p>
                         )}
 

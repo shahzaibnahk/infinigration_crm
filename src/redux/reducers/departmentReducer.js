@@ -14,6 +14,18 @@ export const departmentsReducer = createReducer(
       state.loading = false;
       state.department = null;
     },
+
+    getSignatoryRequest: (state) => {
+      state.loading = true;
+    },
+    getSignatorySuccess: (state, action) => {
+      state.loading = false;
+      state.adminDepartment = action.payload.department;
+    },
+    getSignatoryFail: (state) => {
+      state.loading = false;
+      state.department = null;
+    },
     clearMessage: (state) => {
       state.message = null;
     },

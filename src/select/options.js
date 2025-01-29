@@ -49,3 +49,5 @@ export const salesStatuses = [
   { value: "visited", label: "Visited" },
   { value: "closed_client", label: "Closed Client" },
 ];
+
+export const currencyOptions = [{ value: "usd", label: "USD" }];

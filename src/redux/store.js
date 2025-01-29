@@ -4,6 +4,8 @@ import { leadReducer } from "./reducers/leadReducer";
 import { statsReducer } from "./reducers/statsReducer";
 import { departmentsReducer } from "./reducers/departmentReducer";
 import { programReducer } from "./reducers/programReducer";
+import { contractTemplateReducer } from "./reducers/contractTemplateReducer";
+import { clientReducer } from "./reducers/clientReducer";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ const store = configureStore({
     stats: statsReducer,
     department: departmentsReducer,
     program: programReducer,
+    contractTemplate: contractTemplateReducer,
+    client: clientReducer,
   },
 });
 

@@ -28,10 +28,10 @@ const Attendance = () => {
                         <td>{capitalizeWords(attendance?.status)}</td>
                         <td>
                             <div className='actions'>
-                                <button onClick={(e) => {
+                                {attendance?.status === "absent" && <button onClick={(e) => {
                                     dispatch(markAttendance(attendance._id, moment.tz("Asia/Karachi").format()))
                                     dispatch(getMyProfile())
-                                }}>Mark Attendance</button>
+                                }}>Mark Attendance</button>}
                             </div>
                         </td>
                     </tr>

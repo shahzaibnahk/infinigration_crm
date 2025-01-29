@@ -19,3 +19,22 @@ export const getDepartment = (id) => async (dispatch) => {
     });
   }
 };
+
+export const getSignatory = (id) => async (dispatch) => {
+  dispatch({ type: "getSignatoryRequest" });
+  try {
+    let { data } = await axios.get(`${server}/department/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+
+    dispatch({ type: "getSignatorySuccess", payload: data });
+  } catch (error) {
+    dispatch({
+      type: "getSignatoryFail",
+      payload: error.response.data.message,
+    });
+  }
+};

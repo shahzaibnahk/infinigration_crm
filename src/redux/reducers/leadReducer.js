@@ -177,7 +177,6 @@ export const leadReducer = createReducer(
       state.error = action.payload;
     },
 
-
     getProfileRemarksRequest: (state) => {
       state.loading = true;
     },
@@ -202,6 +201,20 @@ export const leadReducer = createReducer(
     },
 
     submitClientDocumentFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    getClosedLeadsRequest: (state) => {
+      state.loading = true;
+    },
+
+    getClosedLeadsSuccess: (state, action) => {
+      state.loading = false;
+      state.closedLeads = action.payload.closedLeads;
+    },
+
+    getClosedLeadsFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

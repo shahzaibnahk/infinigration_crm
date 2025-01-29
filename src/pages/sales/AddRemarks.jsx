@@ -8,6 +8,7 @@ import Loading from "../Loading"
 
 
 const AddRemarks = () => {
+    const { user } = useSelector(state => state.user)
     const [subject, setSubject] = useState("")
     const [description, setDescription] = useState("")
     const date = moment.tz("Asia/Karachi").format()
@@ -20,7 +21,7 @@ const AddRemarks = () => {
     const alert = useAlert()
     const { loading, error, message } = useSelector(state => state.lead)
     useEffect(() => {
-        alert(message, error, "/sales/leads/assigned")
+        alert(message, error, user && user.role === "sales" ? "/sales/leads/assigned" : "/operations/clients")
     }, [error, message])
     return (
         loading ? <Loading /> : <section className="w-full">

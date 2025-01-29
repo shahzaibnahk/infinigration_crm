@@ -37,7 +37,11 @@ textarea {
 
 table {
   @apply w-full mt-[16px] border-separate text-left;
-
+  .border-td {
+    td {
+      @apply !border border-text;
+    }
+  }
   tr {
     th,
     td {

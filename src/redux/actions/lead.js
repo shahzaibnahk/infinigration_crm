@@ -324,3 +324,22 @@ export const getProfileRemarks = (id) => async (dispatch) => {
     });
   }
 };
+
+export const getClosedLeads = (filter, date) => async (dispatch) => {
+  dispatch({ type: "getClosedLeadsRequest" });
+  try {
+    let { data } = await axios.get(
+      `${server}/get-closed-leads?filter=${filter}&date=${date}`,
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+    dispatch({ type: "getClosedLeadsSuccess", payload: data });
+  } catch (error) {
+    dispatch({
+      type: "getClosedLeadsFail",
+      payload: error.response.data.message,
+    });
+  }
+};
