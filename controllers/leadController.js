@@ -333,6 +333,7 @@ export const updateClientProfile = catchAsyncError(async (req, res, next) => {
   }
   if (program && clientProfile.program !== program) {
     clientProfile.program = program;
+    lead.program = program;
     let documents = selectedProgram.documents.map((d) => ({
       title: d,
       status: "pending",
@@ -487,3 +488,22 @@ export const changeLeadStatusBySales = catchAsyncError(
     });
   }
 );
+
+export const getLeadsBySalesStatus = catchAsyncError(async (req, res, next) => {
+  const { filter, date } = req.query;
+  if (!filter) {
+    return next(new ErrorHandler("Please enter all fields"));
+  }
+
+  let closedLeads = await Lead.find({
+    "sales.status": "closed_client",
+    createdAt: date,
+  })
+    .populate("program")
+    .populate("assignedTo");
+
+  res.status(200).json({
+    success: true,
+    closedLeads,
+  });
+});

@@ -30,6 +30,11 @@ const schema = new mongoose.Schema({
     default: "fresh",
   },
 
+  program: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Program",
+  },
+
   remarks: {
     date: {
       type: String,
@@ -65,7 +70,7 @@ const schema = new mongoose.Schema({
     at: {
       type: String,
     },
-    
+
     reason: {
       type: String,
     },

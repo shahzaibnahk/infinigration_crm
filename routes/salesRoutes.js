@@ -14,6 +14,7 @@ import {
   getProfileRemarks,
 } from "../controllers/remarksController.js";
 import { getSalesStats } from "../controllers/statsController.js";
+import { getAllProgramAsOptions } from "../controllers/programController.js";
 
 const router = express.Router();
 
@@ -27,21 +28,21 @@ router.get(
 router.put(
   "/client/:id",
   isAuthenticated,
-  isAuthorized("sales", "admin"),
+  isAuthorized("sales", "operations", "admin"),
   updateClientProfile
 );
 
 router.get(
   "/client/:id",
   isAuthenticated,
-  isAuthorized("sales", "admin"),
+  isAuthorized("sales", "operations", "admin"),
   getClientProfile
 );
 
 router.put(
   "/client/:profile/document/:id",
   isAuthenticated,
-  isAuthorized("sales", "admin"),
+  isAuthorized("sales", "operations", "admin"),
   singleUpload,
   submitClientDocuments
 );
@@ -49,14 +50,14 @@ router.put(
 router.post(
   "/client/remarks/add",
   isAuthenticated,
-  isAuthorized("sales", "admin"),
+  isAuthorized("sales", "operations", "admin"),
   createRemark
 );
 
 router.get(
   "/client/:id/remarks",
   isAuthenticated,
-  isAuthorized("sales", "admin"),
+  isAuthorized("sales", "operations", "admin"),
   getProfileRemarks
 );
 
@@ -65,6 +66,13 @@ router.get(
   isAuthenticated,
   isAuthorized("sales", "admin"),
   getSalesStats
+);
+
+router.get(
+  "/program-options",
+  isAuthenticated,
+  isAuthorized("sales", "operations", "admin"),
+  getAllProgramAsOptions
 );
 
 router.put(

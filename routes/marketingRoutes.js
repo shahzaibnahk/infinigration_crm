@@ -38,7 +38,7 @@ router.get(
 router.get(
   "/lead/:id",
   isAuthenticated,
-  isAuthorized("marketing", "admin", "sales"),
+  isAuthorized("marketing", "admin", "sales", "operations"),
   getLeadById
 );
 
@@ -66,7 +66,7 @@ router.get(
 router.get(
   "/department/:id",
   isAuthenticated,
-  isAuthorized("marketing", "admin"),
+  isAuthorized("marketing", "operations", "admin"),
   getDepartment
 );
 

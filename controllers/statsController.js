@@ -1,8 +1,10 @@
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
+import { Client } from "../models/Client.js";
+import { ContractTemplate } from "../models/ContractTemplate.js";
 import { Lead } from "../models/Lead.js";
+import { Program } from "../models/Program.js";
 import { today } from "../utils/dateAndTime.js";
 import { getUniqueQuote } from "../utils/quotes.js";
-
 import moment from "moment-timezone";
 
 export const getMarketingStats = catchAsyncError(async (req, res, next) => {
@@ -231,6 +233,100 @@ export const getSalesStats = catchAsyncError(async (req, res, next) => {
       absenteesRemainingThisMonth: 0,
       salaryThisMonth: 0,
       quote,
+    },
+  });
+});
+
+export const getOperationStats = catchAsyncError(async (req, res, next) => {
+  const { date } = req.query;
+  const quote = getUniqueQuote();
+  const timeZone = "America/New_York"; // Replace with your desired time zone
+
+  let closedLeads = await Lead.find({
+    createdAt: date,
+    "sales.status": "closed_client",
+  });
+
+  let clients = await Client.find().populate("profile");
+  let programs = await Program.find();
+  let templates = await ContractTemplate.find();
+
+  // Prepare data for Bar Chart (Clients per Month)
+  const currentYear = moment.tz(timeZone).year();
+  const clientsPerMonth = Array(12).fill(0);
+
+  clients.forEach((client) => {
+    const createdAt = moment.tz(client.createdAt, timeZone);
+    if (createdAt.year() === currentYear) {
+      clientsPerMonth[createdAt.month()] += 1; // month() returns 0 for January
+    }
+  });
+
+  const barChartData = {
+    labels: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
+    datasets: [
+      {
+        label: "Clients per Month",
+        data: clientsPerMonth,
+        backgroundColor: "rgba(41, 37, 255, 0.5)",
+        borderColor: "rgb(41, 37, 255)",
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  // Prepare data for Doughnut Chart (Clients Split by Program)
+  const programStats = programs.map((program) => {
+    const clientCount = clients.filter(
+      (client) => client.profile?.program?.toString() === program._id.toString()
+    ).length;
+
+    return {
+      program: `${program.country}-${program.title}`,
+      count: clientCount,
+    };
+  });
+
+  const doughnutChartData = {
+    labels: programStats.map((stat) => stat.program),
+    datasets: [
+      {
+        data: programStats.map((stat) => stat.count),
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#4BC0C0",
+          "#9966FF",
+          "#FF9F40",
+        ],
+      },
+    ],
+  };
+
+  res.status(200).json({
+    success: true,
+    operationStats: {
+      quote,
+      closedLeadsToday: closedLeads.length,
+      totalClients: clients.length,
+      totalPrograms: programs.length,
+      totalTemplates: templates.length,
+      barChartData,
+      doughnutChartData,
     },
   });
 });

@@ -148,7 +148,7 @@ export const getAllProgramAsOptions = catchAsyncError(
       programs.length > 0 &&
       programs.map((p) => ({
         value: p._id,
-        label: p.country + "-" + p.title ,
+        label: p.country + "-" + p.title,
       }));
 
     res.status(200).json({
@@ -166,6 +166,7 @@ export const changeProgramStatus = catchAsyncError(async (req, res, next) => {
   let user = await User.findById(req.user._id);
   addUserLogs(user, date, `${program.title} created`);
   await user.save();
+  await program.save();
   res.status(200).json({
     success: true,
     message: "Program status updated successfully",
@@ -174,7 +175,7 @@ export const changeProgramStatus = catchAsyncError(async (req, res, next) => {
 
 export const deleteProgram = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  const { date } = req.params;
+  const { date } = req.query;
   const program = await Program.findById(id);
 
   if (!program) {

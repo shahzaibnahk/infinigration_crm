@@ -15,14 +15,14 @@ const router = express.Router();
 router.post(
   "/program",
   isAuthenticated,
-  isAuthorized("admin", "operation"),
+  isAuthorized("admin", "operations"),
   createProgram
 );
 
 router.get(
   "/programs",
   isAuthenticated,
-  isAuthorized("admin", "operation", "sales"),
+  isAuthorized("admin", "operations", "sales"),
   getAllPrograms
 );
 
@@ -36,28 +36,28 @@ router.get(
 router.get(
   "/program/:id",
   isAuthenticated,
-  isAuthorized("admin", "operation"),
+  isAuthorized("admin", "operations"),
   getProgramById
 );
 
 router.put(
   "/program/:id",
   isAuthenticated,
-  isAuthorized("admin", "operation"),
+  isAuthorized("admin", "operations"),
   updateProgram
 );
 
 router.put(
   "/program/:id/change-status",
   isAuthenticated,
-  isAuthorized("admin", "operation"),
+  isAuthorized("admin", "operations"),
   changeProgramStatus
 );
 
 router.delete(
   "/program/:id",
   isAuthenticated,
-  isAuthorized("admin", "operation"),
+  isAuthorized("admin", "operations"),
   deleteProgram
 );
 
