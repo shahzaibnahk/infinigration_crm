@@ -35,7 +35,7 @@ const ViewContract = () => {
                     <tr className="border-td">
                         <td>{client?.salesPerson?.name}</td>
                         <td>Infinigration Consulting</td>
-                        <td>{client.createdAt}</td>
+                        <td>{client?.createdAt}</td>
                     </tr>
                 </tbody>
             </table>
