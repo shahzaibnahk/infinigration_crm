@@ -13,12 +13,12 @@ import {
   updateContractTemplate,
 } from "../controllers/contractTemplateController.js";
 import {
+  changeClientStageStatus,
   createClient,
   deleteClient,
   getAllClients,
   getClientAsOptions,
   getClientById,
-  markClientStageCompleted,
   updateClient,
 } from "../controllers/clientController.js";
 import { getOperationStats } from "../controllers/statsController.js";
@@ -127,7 +127,7 @@ router.put(
   "/client/:id/mark-stage-complete",
   isAuthenticated,
   isAuthorized("operations", "admin"),
-  markClientStageCompleted
+  changeClientStageStatus
 );
 
 export default router;

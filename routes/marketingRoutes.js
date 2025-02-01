@@ -2,6 +2,7 @@ import express from "express";
 import { isAuthenticated, isAuthorized } from "../middlewares/auth.js";
 import {
   assignLeads,
+  bulkLeadDelete,
   bulkUploadLead,
   createLead,
   deleteLead,
@@ -40,6 +41,13 @@ router.get(
   isAuthenticated,
   isAuthorized("marketing", "admin", "sales", "operations"),
   getLeadById
+);
+
+router.put(
+  "/lead/bulk-delete",
+  isAuthenticated,
+  isAuthorized("marketing", "admin"),
+  bulkLeadDelete
 );
 
 router.put(

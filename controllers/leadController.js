@@ -70,26 +70,25 @@ export const createLead = catchAsyncError(async (req, res, next) => {
 });
 
 export const bulkUploadLead = catchAsyncError(async (req, res, next) => {
-  const { leads } = req.body;
+  const { leads, date } = req.body;
   const user = await User.findById(req.user._id);
 
-  if (!leads || leads.length === 0) {
+  if (!leads || leads.length === 0 || !date) {
     return next(new ErrorHandler("Please provide valid leads data", 400));
   }
 
-  const today = new Date().toISOString(); // Ensure `today` is defined
   const promises = leads.map(async (l) => {
     const lead = await Lead.create({
       name: l.name,
       city: l.city,
       phone: l.phone,
       source: l.source,
-      createdAt: today.split("T")[0],
+      createdAt: date,
       createdBy: user._id,
     });
 
     const log = {
-      date: today,
+      date: date,
       doneBy: req.user._id,
       task: "Lead Created",
     };
@@ -110,6 +109,30 @@ export const bulkUploadLead = catchAsyncError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: `${leads.length} Leads created successfully`,
+  });
+});
+
+export const bulkLeadDelete = catchAsyncError(async (req, res, next) => {
+  const { leads, date } = req.body;
+  const user = await User.findById(req.user._id);
+
+  if (!leads || leads.length === 0 || !date) {
+    return next(new ErrorHandler("Please provide valid leads data", 400));
+  }
+
+  const leadIds = Array.isArray(leads) ? leads : [leads];
+  console.log(leadIds);
+  leadIds.map(async (l) => {
+    let lead = await Lead.findById(l);
+    await lead.deleteOne();
+    addUserLogs(user, today, `${lead.uid} Lead created`);
+  });
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: `${leads.length} Leads deleted successfully`,
   });
 });
 

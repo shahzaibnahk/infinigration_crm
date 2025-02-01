@@ -5,6 +5,7 @@ import { User } from "../models/User.js";
 import { addUserLogs } from "../utils/addUserLogs.js";
 import { ClientProfile } from "../models/ClientProfile.js";
 import { Lead } from "../models/Lead.js";
+import { Program } from "../models/Program.js";
 
 export const createClient = catchAsyncError(async (req, res, next) => {
   const {
@@ -29,23 +30,52 @@ export const createClient = catchAsyncError(async (req, res, next) => {
   ) {
     return next(new ErrorHandler("Please enter all fields", 401));
   }
+
   const selectedUser = await User.findById(req.user._id);
   const selectedLead = await Lead.findById(lead);
   const selectedProfile = await ClientProfile.findOne({
     lead: selectedLead._id,
   });
 
+  const selectedProgram = await Program.findById(selectedProfile.program);
+
+  let installmentTotal = installments.reduce(
+    (total, installment) => total + installment.amount,
+    0
+  );
+
+  if (installmentTotal + discount < selectedProgram.totalCost) {
+    return next(
+      new ErrorHandler(
+        `Program Cost is ${
+          selectedProgram.totalCost
+        } while sum of installments and discount is ${
+          installmentTotal + discount
+        }`,
+        401
+      )
+    );
+  }
+
   await Client.create({
     profile: selectedProfile._id,
     contractTemplate,
     installments,
-    salesPerson: lead.assignedTo,
+    salesPerson: selectedLead.assignedTo,
     operationsHead,
     operationsSubordinate,
     signatory,
     createdAt: date,
     createdBy: selectedUser._id,
   });
+
+  selectedLead.logs.push({
+    date: date,
+    doneBy: req.user._id,
+    task: `Contract Created`,
+  });
+
+  await selectedLead.save();
 
   addUserLogs(selectedUser, date, `Client and Contract Created`);
   await selectedUser.save();
@@ -132,12 +162,13 @@ export const updateClient = catchAsyncError(async (req, res, next) => {
     date,
   } = req.body;
 
-  console.log(id)
+  console.log(id);
 
   const client = await Client.findById(id).populate("profile");
+  const selectedLead = await Lead.findById(client.profile.lead);
   const user = await User.findById(req.user._id);
-  if (!client) {
-    return next(new ErrorHandler("Client not found", 404));
+  if (!client || !selectedLead) {
+    return next(new ErrorHandler("Client or Lead not found", 404));
   }
 
   if (contractTemplate) client.contractTemplate = contractTemplate;
@@ -148,7 +179,15 @@ export const updateClient = catchAsyncError(async (req, res, next) => {
     client.operationsSubordinate = operationsSubordinate;
   if (signatory) client.signatory = signatory;
 
+  selectedLead.logs.push({
+    date: date,
+    doneBy: req.user._id,
+    task: "Client Data Updated",
+  });
+
   await client.save();
+  await selectedLead.save();
+
   addUserLogs(user, date, `${client.profile.name} client updated`);
   await user.save();
 
@@ -163,10 +202,18 @@ export const deleteClient = catchAsyncError(async (req, res, next) => {
   const { date } = req.query;
   const selectedUser = await User.findById(req.user._id);
   const client = await Client.findById(id).populate("profile");
+  const selectedLead = await Lead.findById(client.profile.lead);
 
   await client.deleteOne();
+  selectedLead.logs.push({
+    date: date,
+    doneBy: req.user._id,
+    task: `Client Deleted`,
+  });
+
   addUserLogs(selectedUser, date, `${client.profile.name} client deleted`);
   await selectedUser.save();
+  await selectedLead.save();
 
   res.status(200).json({
     success: true,
@@ -174,12 +221,13 @@ export const deleteClient = catchAsyncError(async (req, res, next) => {
   });
 });
 
-export const markClientStageCompleted = catchAsyncError(
+export const changeClientStageStatus = catchAsyncError(
   async (req, res, next) => {
     const { id } = req.params;
-    const { date, tId } = req.query;
+    const { date, tId, status } = req.query;
     const selectedUser = await User.findById(req.user._id);
     const clientSelected = await ClientProfile.findById(id);
+    const selectedLead = await Lead.findById(clientSelected.lead);
     const timeLineProcess = clientSelected?.timelineProcess.find((c) => {
       if (c._id.toString() === tId) {
         return c;
@@ -190,20 +238,26 @@ export const markClientStageCompleted = catchAsyncError(
     if (!timeLineProcess) {
       return next(new ErrorHandler("Timeline Process not found", 404));
     }
-    timeLineProcess.status = "completed";
 
+    timeLineProcess.status = status;
+    selectedLead.logs.push({
+      date: date,
+      doneBy: req.user._id,
+      task: `${timeLineProcess.title} has been marked ${status}`,
+    });
     addUserLogs(
       selectedUser,
       date,
-      `${timeLineProcess.title} marked completed`
+      `${timeLineProcess.title} marked ${status}`
     );
 
     await selectedUser.save();
     await clientSelected.save();
+    await selectedLead.save()
 
     res.status(200).json({
       success: true,
-      message: "Stage Marked Successfully",
+      message: `${timeLineProcess.title} has been marked ${status} successfully`,
     });
   }
 );
