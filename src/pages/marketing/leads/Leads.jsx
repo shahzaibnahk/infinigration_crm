@@ -4,7 +4,7 @@ import { bgWhiteStyles } from '../../../select/styles'
 import MarketingFilter from '../../../components/MarketingFilter'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { assignLeads, deleteLead, getAllLeads } from '../../../redux/actions/lead'
+import { assignLeads, bulkDeleteLead, deleteLead, getAllLeads } from '../../../redux/actions/lead'
 import moment from 'moment-timezone'
 import { capitalizeWords } from '../../../utils/utils'
 import { IoEyeSharp } from "react-icons/io5";
@@ -13,6 +13,9 @@ import { MdDelete } from "react-icons/md";
 import Loading from '../../Loading'
 import { useAlert } from '../../../hooks/userAlert'
 import { getDepartment } from '../../../redux/actions/department'
+import * as XLSX from 'xlsx'
+
+
 
 const Leads = () => {
     const [date, setDate] = useState(moment.tz("Asia/Karachi").format("YYYY-MM-DD"))
@@ -87,6 +90,40 @@ const Leads = () => {
     }));
 
 
+    const downloadExcel = () => {
+        // Define the headers
+        const headers = [
+            { label: 'Uid', key: 'uid' },
+            { label: 'Date', key: 'createdAt' },
+            { label: 'Name', key: 'name' },
+            { label: 'Phone', key: 'phone' },
+            { label: 'Program', key: 'program' },
+            { label: 'Status', key: 'status' },
+            { label: 'Assigned To', key: 'assignedToName' },
+        ];
+
+        // Prepare data for Excel
+        const data = filteredLeads.map((lead) => ({
+            uid: lead.uid,
+            createdAt: moment(lead.createdAt).format("YYYY-MM-DD"),
+            name: lead.name,
+            phone: lead.phone,
+            program: lead.program || "N/A",
+            status: capitalizeWords(lead.status) || "N/A",
+            assignedToName: lead.assignedTo ? lead.assignedTo.name : "N/A",
+        }));
+
+        // Create worksheet and workbook
+        const ws = XLSX.utils.json_to_sheet(data, { header: headers.map(header => header.key) });
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Leads");
+
+        // Save the Excel file
+        XLSX.writeFile(wb, "leads.xlsx");
+    };
+
+
+
     return (
         loading ? <Loading /> : <section>
             <div className="actions-row flex items-center justify-between w-full">
@@ -98,8 +135,8 @@ const Leads = () => {
                 </div>
 
                 <div className='flex items-center gap-[8px]'>
-                    <button className='primary-small-btn'>Download Excel</button>
-                    <button className='primary-small-btn'>Bulk Delete</button>
+                    <button onClick={downloadExcel} className='primary-small-btn'>Download Excel</button>
+                    <button onClick={() => { dispatch(bulkDeleteLead(allSelectedLeads, moment.tz("Asia/Karachi").format())) }} className='primary-small-btn'>Bulk Delete</button>
                 </div>
             </div>
 

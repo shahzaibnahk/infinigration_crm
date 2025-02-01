@@ -22,12 +22,12 @@ export const createLead =
     }
   };
 
-export const bulkUploadLead = (leads) => async (dispatch) => {
+export const bulkUploadLead = (leads, date) => async (dispatch) => {
   dispatch({ type: "bulkUploadLeadsRequest" });
   try {
     let { data } = await axios.post(
       `${server}/bulk-upload-leads`,
-      { leads },
+      { leads, date },
       {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -111,6 +111,27 @@ export const deleteLead = (id) => async (dispatch) => {
     dispatch({ type: "deleteLeadSuccess", payload: data });
   } catch (error) {
     dispatch({ type: "deleteLeadFail", payload: error.response.data.message });
+  }
+};
+
+export const bulkDeleteLead = (leads, date) => async (dispatch) => {
+  dispatch({ type: "deleteBulkLeadRequest" });
+  try {
+    let { data } = await axios.put(
+      `${server}/lead/bulk-delete`,
+      { leads, date },
+
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+    dispatch({ type: "deleteBulkLeadSuccess", payload: data });
+  } catch (error) {
+    dispatch({
+      type: "deleteBulkLeadFail",
+      payload: error.response.data.message,
+    });
   }
 };
 

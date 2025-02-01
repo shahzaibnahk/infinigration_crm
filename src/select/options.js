@@ -50,4 +50,11 @@ export const salesStatuses = [
   { value: "closed_client", label: "Closed Client" },
 ];
 
-export const currencyOptions = [{ value: "usd", label: "USD" }];
+export const currencyOptions = [
+  { value: "pkr", label: "PKR" },
+  { value: "usd", label: "USD" },
+  { value: "gbp", label: "GBP" },
+  { value: "aed", label: "AED" },
+  { value: "cad", label: "CAD" },
+  { value: "eur", label: "EUR" },
+];

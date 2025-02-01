@@ -14,9 +14,9 @@ const TimelineProcess = () => {
         dispatch(getClientById(id))
     }, [error, message])
     const alert = useAlert()
-    const markStageCompleteHandler = (e, id, tId) => {
+    const markStageCompleteHandler = (e, id, tId, status) => {
         e.preventDefault()
-        dispatch(markStageCompleted(id, moment.tz("Asia/Karachi").format(), tId))
+        dispatch(markStageCompleted(id, moment.tz("Asia/Karachi").format(), tId, status))
     }
 
     useEffect(() => {
@@ -48,7 +48,7 @@ const TimelineProcess = () => {
                             <td>{t.status}</td>
                             <td>
                                 <div className="actions">
-                                    <button onClick={(e) => markStageCompleteHandler(e, client?.profile?._id, t._id)}>Mark Completed</button>
+                                    <button onClick={(e) => markStageCompleteHandler(e, client?.profile?._id, t._id, t?.status === "completed" ? "pending" : "completed")}>{t?.status === "completed" ? "Mark Pending" : "Mark Completed"}</button>
                                 </div>
                             </td>
                         </tr>

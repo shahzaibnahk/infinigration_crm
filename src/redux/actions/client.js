@@ -82,28 +82,29 @@ export const getClientById = (id) => async (dispatch) => {
   }
 };
 
-export const markStageCompleted = (id, date, tId) => async (dispatch) => {
-  dispatch({ type: "markStageRequest" });
-  try {
-    let { data } = await axios.put(
-      `${server}/client/${id}/mark-stage-complete?date=${date}&tId=${tId}`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      }
-    );
+export const markStageCompleted =
+  (id, date, tId, status) => async (dispatch) => {
+    dispatch({ type: "markStageRequest" });
+    try {
+      let { data } = await axios.put(
+        `${server}/client/${id}/mark-stage-complete?date=${date}&tId=${tId}&status=${status}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
 
-    dispatch({ type: "markStageSuccess", payload: data });
-  } catch (error) {
-    dispatch({
-      type: "markStageFail",
-      payload: error.response.data.message,
-    });
-  }
-};
+      dispatch({ type: "markStageSuccess", payload: data });
+    } catch (error) {
+      dispatch({
+        type: "markStageFail",
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 export const updateClient =
   (

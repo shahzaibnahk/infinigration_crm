@@ -16,13 +16,22 @@ const Clients = () => {
     const alert = useAlert()
     const dispatch = useDispatch()
     const { clients, loading, error, message } = useSelector(state => state.client)
+
     useEffect(() => {
         dispatch(getAllClients())
         alert(message, error, "/operations/clients")
-    }, [error, message])
+    }, [message])
+
+    const filteredClients = clients?.filter(c =>
+        (!month || c.createdAt.includes(month.value)) &&
+        (!program || c.profile.program.title.includes(program.value)) &&
+        (!salesPerson || c.profile.lead.assignedTo.toString() === salesPerson?.value.toString()) &&
+        (!phoneNumber || c.profile.phone.includes(phoneNumber)) &&
+        (!name || c.profile.name.toLowerCase().includes(name.toLowerCase()))
+    ) || clients
 
     return (
-        loading ? <Loading /> || !clients : <section className='w-full'>
+        loading ? <Loading /> : <section className='w-full'>
             <ClientsFilter
                 program={program}
                 setProgram={setProgram}
@@ -49,7 +58,7 @@ const Clients = () => {
                 </thead>
 
                 <tbody>
-                    {clients && clients.length > 0 && clients.map((c, index) => <tr key={index}>
+                    {filteredClients?.length > 0 && filteredClients?.map((c, index) => <tr key={index}>
                         <td>{c.createdAt}</td>
                         <td>{c.profile.name}</td>
                         <td>{c.profile.phone}</td>
@@ -63,13 +72,12 @@ const Clients = () => {
                                 <Link to={`/operations/client/${c._id}/timeline-process`}>Timeline Process</Link>
                                 <Link to={`/operations/client/${c?.profile?.lead}/remarks/add`}>Add Remarks</Link>
                                 <Link to={`/operations/client/${c._id}/update`}>Update</Link>
-                                <button onClick={(e) => dispatch(deleteClient(c._id, moment.tz("Asia/Karachi").format()))}>Delete</button>
+                                <button onClick={() => dispatch(deleteClient(c._id, moment.tz("Asia/Karachi").format()))}>Delete</button>
                             </div>
                         </td>
                     </tr>)}
                 </tbody>
             </table>
-
         </section>
     )
 }

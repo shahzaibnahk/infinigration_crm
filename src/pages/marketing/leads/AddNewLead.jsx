@@ -60,7 +60,7 @@ const AddNewLead = () => {
 
     const bulkLeadUploadHandler = (e) => {
         e.preventDefault()
-        dispatch(bulkUploadLead(excelData))
+        dispatch(bulkUploadLead(excelData, moment.tz("Asia/Karachi").format("YYYY-MM-DD")))
     }
 
     return (

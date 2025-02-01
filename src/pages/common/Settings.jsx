@@ -8,9 +8,9 @@ const Settings = ({ isAuthenticated, user }) => {
         <section>
             <div className="bg-white p-[16px] rounded-lg ">
                 <h2 className="">Profile Picture</h2>
-                <div className="flex items-center gap-[16px] mb-[16px]">
+                <div className="flex items-center gap-[16px] mb-[16px] ">
                     <img src={generateProfilePicture(isAuthenticated, user)} alt="" className="rounded-full w-[128px] h-[128px]" />
-                    <div className="w-[400px]">
+                    <div className={`w-[400px] ${isAuthenticated && user?.role === "admin" ? "block" : "hidden"}`}>
                         <input type="file" />
                         <button className="primary-btn !w-[120px] !mt-[8px] !p-[10px]">Submit</button>
                     </div>

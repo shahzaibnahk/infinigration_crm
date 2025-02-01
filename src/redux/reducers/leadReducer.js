@@ -80,6 +80,20 @@ export const leadReducer = createReducer(
       state.error = action.payload;
     },
 
+
+    deleteBulkLeadRequest: (state) => {
+      state.loading = true;
+    },
+    deleteBulkLeadSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+
+    deleteBulkLeadFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     assignLeadsRequest: (state) => {
       state.loading = true;
     },
