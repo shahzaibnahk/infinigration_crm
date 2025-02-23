@@ -105,7 +105,7 @@ router.get(
 router.get(
   "/clients-options",
   isAuthenticated,
-  isAuthorized("operations", "admin"),
+  isAuthorized("operations", "admin", "finance"),
   getClientAsOptions
 );
 

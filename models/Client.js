@@ -12,6 +12,11 @@ const schema = new mongoose.Schema({
 
   installments: [
     {
+      installmentNo: {
+        type: Number,
+        default: 1,
+      },
+
       stage: {
         type: String,
       },

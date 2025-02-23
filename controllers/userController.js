@@ -6,6 +6,8 @@ import moment from "moment-timezone";
 import { Attendance } from "../models/Attendance.js";
 import getDataUri from "../utils/dataUri.js";
 import cloudinary from "cloudinary";
+import { createPayrollForUser } from "./payrollController.js";
+
 export const login = catchAsyncError(async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -131,6 +133,7 @@ export const register = catchAsyncError(async (req, res, next) => {
     attendance: attendanceData,
   });
 
+  await createPayrollForUser(user._id, salary);
   // Respond with success
   res.status(200).json({
     success: true,

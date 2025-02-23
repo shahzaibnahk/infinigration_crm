@@ -1,9 +1,12 @@
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import { Client } from "../models/Client.js";
 import { ContractTemplate } from "../models/ContractTemplate.js";
+import { Invoice } from "../models/Invoice.js";
 import { Lead } from "../models/Lead.js";
 import { Program } from "../models/Program.js";
+import { Transaction } from "../models/Transaction.js";
 import { today } from "../utils/dateAndTime.js";
+import ErrorHandler from "../utils/errorHandler.js";
 import { getUniqueQuote } from "../utils/quotes.js";
 import moment from "moment-timezone";
 
@@ -328,5 +331,191 @@ export const getOperationStats = catchAsyncError(async (req, res, next) => {
       barChartData,
       doughnutChartData,
     },
+  });
+});
+
+export const getFinanceStats = catchAsyncError(async (req, res, next) => {
+  const { date } = req.query;
+
+  if (!date) {
+    return next(new ErrorHandler("Date is required", 400));
+  }
+  const quote = getUniqueQuote();
+
+  let incomingsToday = await Transaction.find({
+    createdAt: date,
+    type: "income",
+  });
+
+  let expensesToday = await Transaction.find({
+    createdAt: date,
+    type: "expense",
+  });
+
+  const invoices = await Invoice.find({
+    createdAt: date,
+  });
+
+  const invoicesPaid = await Invoice.find({
+    createdAt: date,
+    status: "paid",
+  });
+
+  const invoicesPartiallyPaid = await Invoice.find({
+    createdAt: date,
+    status: "partially_paid",
+  });
+
+  // Get the current year and month
+  const currentYear = moment().tz("Asia/Karachi").year();
+  const currentMonth = moment().tz("Asia/Karachi").month() + 1; // month() is zero-based
+
+  // Aggregate income and expenses for each month of the current year
+  const incomeByMonth = await Transaction.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: `${currentYear}-01-01`,
+          $lte: `${currentYear}-12-31`,
+        },
+        type: "income",
+      },
+    },
+    {
+      $group: {
+        _id: { $substr: ["$createdAt", 5, 2] }, // Extract month from createdAt
+        total: { $sum: "$amount" },
+      },
+    },
+    {
+      $sort: { _id: 1 },
+    },
+  ]);
+
+  const expensesByMonth = await Transaction.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: `${currentYear}-01-01`,
+          $lte: `${currentYear}-12-31`,
+        },
+        type: "expense",
+      },
+    },
+    {
+      $group: {
+        _id: { $substr: ["$createdAt", 5, 2] }, // Extract month from createdAt
+        total: { $sum: "$amount" },
+      },
+    },
+    {
+      $sort: { _id: 1 },
+    },
+  ]);
+
+  // Prepare bar chart data
+  const barChartData = {
+    labels: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
+    datasets: [
+      {
+        label: "Income",
+        data: Array(12).fill(0),
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
+      },
+      {
+        label: "Expenses",
+        data: Array(12).fill(0),
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgba(255, 99, 132, 1)",
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  incomeByMonth.forEach((item) => {
+    barChartData.datasets[0].data[parseInt(item._id, 10) - 1] = item.total;
+  });
+
+  expensesByMonth.forEach((item) => {
+    barChartData.datasets[1].data[parseInt(item._id, 10) - 1] = item.total;
+  });
+
+  // Prepare doughnut chart data for expenses of the current month
+  const expenseCategories = await Transaction.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: `${currentYear}-${String(currentMonth).padStart(2, "0")}-01`,
+          $lte: `${currentYear}-${String(currentMonth).padStart(2, "0")}-31`,
+        },
+        type: "expense",
+      },
+    },
+    {
+      $group: {
+        _id: "$category",
+        total: { $sum: "$amount" },
+      },
+    },
+    {
+      $sort: { total: -1 },
+    },
+  ]);
+
+  const doughnutChartData = {
+    labels: expenseCategories.map((item) => item._id),
+    datasets: [
+      {
+        data: expenseCategories.map((item) => item.total),
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#4BC0C0",
+          "#9966FF",
+          "#FF9F40",
+        ],
+        borderColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#4BC0C0",
+          "#9966FF",
+          "#FF9F40",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  let stats = {
+    quote,
+    incomingsToday: incomingsToday.reduce((a, b) => a + b.amount, 0),
+    expensesToday: expensesToday.reduce((a, b) => a + b.amount, 0),
+    invoicesSent: invoices.length,
+    invoicesPaid: invoicesPaid.length,
+    invoicesPartiallyPaid: invoicesPartiallyPaid.length,
+    barChartData,
+    doughnutChartData,
+  };
+
+  res.status(200).json({
+    success: true,
+    stats,
   });
 });
