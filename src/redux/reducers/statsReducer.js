@@ -1,4 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
+import { getFinanceStats } from "../actions/stats";
 
 export const statsReducer = createReducer(
   {},
@@ -41,6 +42,20 @@ export const statsReducer = createReducer(
     },
 
     getOperationsStatsFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    getFinanceStatsRequest: (state) => {
+      state.loading = true;
+    },
+
+    getFinanceStatsSuccess: (state, action) => {
+      state.loading = false;
+      state.financeStats = action.payload.stats;
+    },
+
+    getFinanceStatsFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

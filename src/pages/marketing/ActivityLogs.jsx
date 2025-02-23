@@ -5,13 +5,8 @@ import { getMyLogs } from '../../redux/actions/user'
 import Loading from '../Loading'
 
 const ActivityLogs = () => {
-    const today = moment.tz("Asia/Karachi").format("YYYY-MM-DD")
-    const dispatch = useDispatch()
+
     const { logs } = useSelector(state => state.user)
-
-
-
-
 
     return (
         <section>

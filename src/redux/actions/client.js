@@ -63,6 +63,25 @@ export const getAllClients = () => async (dispatch) => {
   }
 };
 
+export const getClientAsOptions = () => async (dispatch) => {
+  dispatch({ type: "getClientAsOptionsRequest" });
+  try {
+    let { data } = await axios.get(`${server}/clients-options`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+
+    dispatch({ type: "getClientAsOptionsSuccess", payload: data });
+  } catch (error) {
+    dispatch({
+      type: "getClientAsOptionsFail",
+      payload: error.response.data.message,
+    });
+  }
+};
+
 export const getClientById = (id) => async (dispatch) => {
   dispatch({ type: "getClientByIdRequest" });
   try {

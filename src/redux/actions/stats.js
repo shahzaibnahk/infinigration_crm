@@ -58,3 +58,21 @@ export const getOperationsStats = (date) => async (dispatch) => {
   }
 };
 
+export const getFinanceStats = (date) => async (dispatch) => {
+  dispatch({ type: "getFinanceStatsRequest" });
+  try {
+    let { data } = await axios.get(`${server}/finance/stats?date=${date}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+
+    dispatch({ type: "getFinanceStatsSuccess", payload: data });
+  } catch (error) {
+    dispatch({
+      type: "getFinanceStatsFail",
+      payload: error.response.data.message,
+    });
+  }
+};

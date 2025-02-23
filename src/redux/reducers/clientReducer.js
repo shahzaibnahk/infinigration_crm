@@ -86,6 +86,21 @@ export const clientReducer = createReducer(
       state.loading = false;
       state.error = action.payload;
     },
+
+    getClientAsOptionsRequest: (state) => {
+      state.loading = true;
+    },
+
+    getClientAsOptionsSuccess: (state, action) => {
+      state.loading = false;
+      state.clientOptions = action.payload.options;
+    },
+
+    getClientAsOptionsFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     clearError: (state) => {
       state.error = null;
     },

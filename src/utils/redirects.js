@@ -9,8 +9,17 @@ export const redirectUser = (isAuthenticated, user) => {
 
   if (isAuthenticated && user?.role === "operations") {
     return "/operations/dashboard";
-  } else {
+  }
+
+  if (isAuthenticated && user?.role === "finance") {
+    return "/finance/dashboard";
+  }
+
+  if (isAuthenticated && user?.role === "admin") {
+    return "/admin/dashboard";
+  }
+  
+  else {
     return "/";
   }
 };
-  

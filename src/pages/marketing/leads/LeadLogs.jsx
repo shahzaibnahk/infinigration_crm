@@ -29,13 +29,15 @@ const LeadLogs = () => {
                 <tbody>
                     {lead && lead.logs && lead.logs.map((l, index) => <tr key={index}>
                         <td>{l.date?.split("T")[0]}</td>
-                        <td>{l.date?.split("T")[1].split("+")[0]}</td>
+                        <td>
+                            {l.date?.includes("T") ? l.date.split("T")[1]?.split(/[+Z]/)[0] : "No time"}
+                        </td>
                         <td>
                             <div className='flex items-center gap-[8px]'>
                                 <img className='w-[48px] h-[48px] rounded-full' src={generateProfilePicture(true, l.doneBy)} alt="" />
                                 <div>
-                                    <p className='font-[500]'>{l.doneBy.name}</p>
-                                    <p className='text-sm text-accent font-[600]'>{capitalizeWords(l.doneBy.role)}</p>
+                                    <p className='font-[500]'>{l?.doneBy?.name}</p>
+                                    <p className='text-sm text-accent font-[600]'>{capitalizeWords(l?.doneBy?.role)}</p>
                                 </div>
                             </div>
                         </td>

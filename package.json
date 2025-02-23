@@ -28,6 +28,7 @@
     "react-router-dom": "^7.0.2",
     "react-select": "^5.9.0",
     "react-select-country-list": "^2.2.3",
+    "react-to-pdf": "^1.0.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

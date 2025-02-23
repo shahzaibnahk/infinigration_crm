@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { authRoutes } from "./routes/auth"
 import { routes } from "./routes/marketing"
 import Sidebar from "./components/Sidebar"
-import { marketingRoutes, sOperationsRoutes, sSalesRoutes } from "./routes/sidebar"
+import { marketingRoutes, sAdminRoutes, sFinanceRoutes, sOperationsRoutes, sSalesRoutes } from "./routes/sidebar"
 import { ReactLenis, useLenis } from '@studio-freight/react-lenis'
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
@@ -16,6 +16,9 @@ import Loading from "./pages/Loading"
 import { salesRoutes } from "./routes/sales"
 import moment from "moment-timezone"
 import { operationRoutes } from "./routes/operation"
+import { financeRoutes } from "./routes/finance"
+import Error404 from "./pages/common/Error404"
+import { adminRoutes } from "./routes/admin"
 
 const App = () => {
   const { isAuthenticated, user, loading, message, error } = useSelector(state => state.user)
@@ -29,14 +32,14 @@ const App = () => {
   useEffect(() => {
     dispatch(getMyProfile())
   }, [dispatch])
-  
+
   useEffect(() => {
 
     if (isAuthenticated) {
       dispatch(getMyAttendance(date))
       dispatch(getMyLogs(date))
     }
-  }, [dispatch, isAuthenticated, date])
+  }, [dispatch, date])
 
   useEffect(() => {
     if (message) {
@@ -55,23 +58,35 @@ const App = () => {
     loading ? <Loading /> :
       <ReactLenis root>
         <Router>
+
+
           <Routes>
             {authRoutes.map((r, index) => <Route key={index} path={r.path} element={<ProtectedRoute isAuthenticated={!isAuthenticated} redirect={redirectUser(isAuthenticated, user)}>
               <r.element />
             </ProtectedRoute>} />)}
 
-            {routes.map((r, index) => <Route key={index} path={r.path} element={<ProtectedRoute isAuthenticated={isAuthenticated && user.role === "marketing"} redirect={"/"}>
-              <Sidebar isAuthenticated={isAuthenticated} user={user} component={r.element} routes={marketingRoutes} pageTitle={r.title} />
+            {routes.map((r, index) => <Route key={index} path={r.path} element={<ProtectedRoute isAuthenticated={isAuthenticated && user.role === "marketing" || isAuthenticated && user.role === "admin"} redirect={"/"}>
+              <Sidebar isAuthenticated={isAuthenticated} user={user} component={r.element} routes={isAuthenticated && user.role === "admin" ? sAdminRoutes : marketingRoutes} pageTitle={r.title} />
             </ProtectedRoute>} />)}
 
-            {salesRoutes.map((r, index) => <Route key={index} path={r.path} element={<ProtectedRoute isAuthenticated={isAuthenticated && user.role === "sales"} redirect={"/"}>
-              <Sidebar isAuthenticated={isAuthenticated} user={user} component={r.element} routes={sSalesRoutes} pageTitle={r.title} />
+            {salesRoutes.map((r, index) => <Route key={index} path={r.path} element={<ProtectedRoute isAuthenticated={isAuthenticated && user.role === "sales" || isAuthenticated && user.role === "admin"} redirect={"/"}>
+              <Sidebar isAuthenticated={isAuthenticated} user={user} component={r.element} routes={isAuthenticated && user.role === "admin" ? sAdminRoutes : sSalesRoutes} pageTitle={r.title} />
             </ProtectedRoute>} />)}
 
 
-            {operationRoutes.map((r, index) => <Route key={index} path={r.path} element={<ProtectedRoute isAuthenticated={isAuthenticated && user.role === "operations"} redirect={"/"}>
-              <Sidebar isAuthenticated={isAuthenticated} user={user} component={r.element} routes={sOperationsRoutes} pageTitle={r.title} />
+            {operationRoutes.map((r, index) => <Route key={index} path={r.path} element={<ProtectedRoute isAuthenticated={isAuthenticated && user.role === "operations" || isAuthenticated && user.role === "admin"} redirect={"/"}>
+              <Sidebar isAuthenticated={isAuthenticated} user={user} component={r.element} routes={isAuthenticated && user.role === "admin" ? sAdminRoutes : sOperationsRoutes} pageTitle={r.title} />
             </ProtectedRoute>} />)}
+
+            {financeRoutes.map((r, index) => <Route key={index} path={r.path} element={<ProtectedRoute isAuthenticated={isAuthenticated && user.role === "finance" || isAuthenticated && user.role === "admin"} redirect={"/"}>
+              <Sidebar isAuthenticated={isAuthenticated} user={user} component={r.element} routes={isAuthenticated && user.role === "admin" ? sAdminRoutes : sFinanceRoutes} pageTitle={r.title} />
+            </ProtectedRoute>} />)}
+
+            {adminRoutes.map((r, index) => <Route key={index} path={r.path} element={<ProtectedRoute isAuthenticated={isAuthenticated && user.role === "admin"} redirect={"/"}>
+              <Sidebar isAuthenticated={isAuthenticated} user={user} component={r.element} routes={sAdminRoutes} pageTitle={r.title} />
+            </ProtectedRoute>} />)}
+
+
 
           </Routes>
         </Router>

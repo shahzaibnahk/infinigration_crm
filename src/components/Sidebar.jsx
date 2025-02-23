@@ -59,7 +59,7 @@ const Sidebar = ({
                                                     className="flex items-center justify-between"
                                                 >
                                                     <span className="text-base font-[400] flex gap-[8px] items-center">
-                                                        <r.icon />
+                                                        <r.icon className="text-xl"/>
                                                         {r.title}
                                                     </span>
                                                     <span>

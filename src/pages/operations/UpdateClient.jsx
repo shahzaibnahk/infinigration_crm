@@ -72,7 +72,7 @@ const UpdateClient = () => {
             setContractTemplate(templateOptions?.find((t) => t?.value?.toString() === client?.contractTemplate?._id.toString()));
             setOperationsHead(operationOptions.find((o) => o?.value?.toString() === client?.operationsHead?._id.toString()));
             setOperationsSubordinate(operationOptions.find((o) => o?.value?.toString() === client?.operationsSubordinate?._id.toString()));
-            setSignatory(signatoryOptions.find((o) => o?.value?.toString() === client?.signatory?._id.toString()));
+            setSignatory(signatoryOptions && signatoryOptions.length > 0 && signatoryOptions.find((o) => o?.value?.toString() === client?.signatory?._id.toString()));
             setDiscount(client?.discount || 0);
 
             if (client.installments?.length > 0) {
