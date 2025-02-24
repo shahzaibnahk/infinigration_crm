@@ -11,6 +11,7 @@ import { invoiceReducer } from "./reducers/invoiceReducer";
 import { vendorReducer } from "./reducers/vendorReducer";
 import { subAgentReducer } from "./reducers/subagentReducer";
 import { payrollReducer } from "./reducers/payrollReducer";
+import { adminReducer } from "./reducers/adminReducer";
 
 const store = configureStore({
   reducer: {
@@ -26,6 +27,7 @@ const store = configureStore({
     vendor: vendorReducer,
     subagent: subAgentReducer,
     payroll: payrollReducer,
+    admin: adminReducer,
   },
 });
 

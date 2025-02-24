@@ -173,3 +173,69 @@ export const invoiceStatusFilter = [
     label: "Paid",
   },
 ];
+
+export const genderOptions = [
+  {
+    value: "male",
+    label: "Male",
+  },
+  {
+    value: "female",
+    label: "Female",
+  },
+];
+
+export const maritalStatusOptions = [
+  {
+    value: "single",
+    label: "Single",
+  },
+  {
+    value: "married",
+    label: "Married",
+  },
+  {
+    value: "divorced",
+    label: "Divorced",
+  },
+  {
+    value: "widowed",
+    label: "Widowed",
+  },
+];
+
+export const nationalityOptions = [
+  {
+    value: "pakistani",
+    label: "Pakistani",
+  },
+  {
+    value: "foreigner",
+    label: "Foreigner",
+  },
+];
+
+export const roleOptions = [
+  {
+    value: "marketing",
+    label: "Marketing",
+  },
+  {
+    value: "sales",
+    label: "Sales",
+  },
+  {
+    value: "operations",
+    label: "Operations",
+  },
+
+  {
+    value: "finance",
+    label: "Finance",
+  },
+
+  {
+    value: "admin",
+    label: "Admin",
+  },
+];

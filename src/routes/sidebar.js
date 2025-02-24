@@ -450,8 +450,8 @@ export const sAdminRoutes = [
     title: "Employees",
     expandAble: true,
     subRoutes: [
-      { value: "/admin/employee/all", label: "All Employee" },
-      { value: "/admin/employee/add", label: "Add New Employee" },
+      { value: "/admin/employees/all", label: "All Employee" },
+      { value: "/admin/employees/add", label: "Add New Employee" },
       { value: "/finance/employee_payrolls", label: "Employee Payroll" },
     ],
     icon: PiMoneyWavy,

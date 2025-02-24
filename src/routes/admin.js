@@ -1,6 +1,7 @@
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import AddNewEmployee from "../pages/admin/employee/AddNewEmployee";
 import Employees from "../pages/admin/employee/Employees";
+import UpdateEmployee from "../pages/admin/employee/UpdateEmployee";
 import AddSubagent from "../pages/admin/subagent/AddSubagent";
 import Subagents from "../pages/admin/subagent/Subagents";
 import UpdateSubagent from "../pages/admin/subagent/UpdateSubagent";
@@ -9,6 +10,7 @@ import AddNewVendor from "../pages/admin/vendor/AddNewVendor";
 import UpdateVendor from "../pages/admin/vendor/UpdateVendor";
 import Vendors from "../pages/admin/vendor/Vendors";
 import ViewVendor from "../pages/admin/vendor/ViewVendor";
+import Settings from "../pages/common/Settings";
 
 export const adminRoutes = [
   {
@@ -70,9 +72,14 @@ export const adminRoutes = [
   },
 
   {
+    path: "/admin/employee/:id/update",
+    title: "Update Employee",
+    element: UpdateEmployee,
+  },
+
+  {
     path: "/admin/employees/add",
     title: "Add New Employee",
     element: AddNewEmployee,
   },
-  
 ];
