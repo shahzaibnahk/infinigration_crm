@@ -433,7 +433,8 @@ export const sAdminRoutes = [
     title: "Subagents",
     expandAble: true,
     subRoutes: [
-      { value: "/finance/subagent/payments", label: "Subagent Payments" },
+      { value: "/admin/subagents/all", label: "All Subagents" },
+      { value: "/admin/subagents/add", label: "Add New Subagent" },
       {
         value: "/finance/subagent/payments/add",
         label: "Add Subagent Payment",
@@ -445,12 +446,13 @@ export const sAdminRoutes = [
   },
 
   {
-    value: "/finance/employee_payrolls",
-    title: "Employee Payrolls",
-    expandAble: false,
+    value: "",
+    title: "Employees",
+    expandAble: true,
     subRoutes: [
-      { value: "/finance/vendor/payments", label: "Vendor Payments" },
-      { value: "/finance/vendor/credits", label: "Vendor Credits" },
+      { value: "/admin/employee/all", label: "All Employee" },
+      { value: "/admin/employee/add", label: "Add New Employee" },
+      { value: "/finance/employee_payrolls", label: "Employee Payroll" },
     ],
     icon: PiMoneyWavy,
   },

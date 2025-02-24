@@ -34,7 +34,7 @@ const Sidebar = ({
     return (
         <section className="w-full min-h-screen bg-bg p-[20px]">
             <div className="wrapper w-full  flex gap-[16px] relative">
-                <div className="sidebar fixed w-[18%] h-[calc(100vh-40px)] bg-white p-[20px] rounded-md flex flex-col justify-between overflow-y-auto">
+                <div className="sidebar fixed w-[20%] h-[calc(100vh-40px)] bg-white p-[20px] rounded-md flex flex-col justify-between overflow-y-auto">
                     {/* Sidebar content */}
                     <div>
                         <div className="profile-container flex flex-col items-center border-b pb-[16px] mb-[16px]">
@@ -109,7 +109,7 @@ const Sidebar = ({
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between logout-container">
+                    <div className="flex items-center justify-between logout-container mt-[32px]">
                         <div className="flex items-center gap-[8px]">
                             <img
                                 src={generateProfilePicture(isAuthenticated, user)}
@@ -125,7 +125,7 @@ const Sidebar = ({
                     </div>
                 </div>
 
-                <div className="component-area h-auto flex-grow w-full ml-[19.5%]">
+                <div className="component-area h-auto flex-grow w-full ml-[21.5%]">
                     <div className="header w-full bg-white mb-[16px] p-[16px] rounded-md flex items-center justify-between">
                         {pageTitle ? (
                             <p className="text-lg font-medium">{pageTitle}</p>

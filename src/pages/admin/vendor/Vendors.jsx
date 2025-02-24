@@ -36,7 +36,7 @@ const Vendors = () => {
                             <td>
                                 <div className='actions'>
                                     <Link to={`/admin/vendor/${v._id}`}>View</Link>
-                                    <Link>Update</Link>
+                                    <Link to={`/admin/vendor/${v._id}/update`}>Update</Link>
                                     <button>Delete</button>
                                 </div>
                             </td>

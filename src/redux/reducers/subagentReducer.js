@@ -20,7 +20,7 @@ export const subAgentReducer = createReducer(
     },
     getAllSubagentsSuccess: (state, action) => {
       state.loading = false;
-      state.subagents = action.payload.subagents;
+      state.subagents = action.payload.subAgents;
     },
     getAllSubagentsFail: (state, action) => {
       state.loading = false;
@@ -32,7 +32,7 @@ export const subAgentReducer = createReducer(
     },
     getSubagentByIdSuccess: (state, action) => {
       state.loading = false;
-      state.subagent = action.payload.subagent;
+      state.subagent = action.payload.subAgent;
     },
     getSubagentByIdFail: (state, action) => {
       state.loading = false;
@@ -49,14 +49,14 @@ export const subAgentReducer = createReducer(
       state.loading = false;
       state.error = action.payload;
     },
-    updateSubagentPaymentRequest: (state) => {
+    updateSubagentRequest: (state) => {
       state.loading = true;
     },
-    updateSubagentPaymentSuccess: (state, action) => {
+    updateSubagentSuccess: (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
     },
-    updateSubagentPaymentFail: (state, action) => {
+    updateSubagentFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

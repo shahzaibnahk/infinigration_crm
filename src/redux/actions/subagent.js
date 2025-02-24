@@ -2,7 +2,7 @@ import axios from "axios";
 import { server } from "../store";
 
 export const createSubAgent = (name, email, date) => async (dispatch) => {
-  dispatch({ type: "createSubAgentRequest" });
+  dispatch({ type: "createSubagentRequest" });
   try {
     let { data } = await axios.post(
       `${server}/subagent`,
@@ -18,10 +18,10 @@ export const createSubAgent = (name, email, date) => async (dispatch) => {
         withCredentials: true,
       }
     );
-    dispatch({ type: "createSubAgentSuccess", payload: data });
+    dispatch({ type: "createSubagentSuccess", payload: data });
   } catch (error) {
     dispatch({
-      type: "createSubAgentFail",
+      type: "createSubagentFail",
       payload: error.response.data.message,
     });
   }
@@ -93,6 +93,30 @@ export const updateSubagent = (id, name, email, date) => async (dispatch) => {
     });
   }
 };
+
+export const updateSubgent = (id, name, email, date) => async (dispatch) => {
+  dispatch({ type: "updateSubagentRequest" });
+  try {
+    await axios.put(
+      `${server}/subagent/${id}`,
+      {
+        name,
+        email,
+        date,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    dispatch({ type: "updateSubagentSuccess" });
+  } catch (error) {
+    dispatch({
+      type: "updateSubagentFail",
+      payload: error.response.data.message,
+    });
+  }
+};
+
 export const deleteSubagent = (id) => async (dispatch) => {
   dispatch({ type: "deleteSubagentRequest" });
   try {

@@ -1,4 +1,10 @@
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import AddNewEmployee from "../pages/admin/employee/AddNewEmployee";
+import Employees from "../pages/admin/employee/Employees";
+import AddSubagent from "../pages/admin/subagent/AddSubagent";
+import Subagents from "../pages/admin/subagent/Subagents";
+import UpdateSubagent from "../pages/admin/subagent/UpdateSubagent";
+import ViewSubagent from "../pages/admin/subagent/ViewSubagent";
 import AddNewVendor from "../pages/admin/vendor/AddNewVendor";
 import UpdateVendor from "../pages/admin/vendor/UpdateVendor";
 import Vendors from "../pages/admin/vendor/Vendors";
@@ -29,8 +35,44 @@ export const adminRoutes = [
   },
 
   {
-    path: "/admin/vendors/:id/update",
+    path: "/admin/vendor/:id/update",
     title: "Update Vendor",
     element: UpdateVendor,
   },
+
+  {
+    path: "/admin/subagents/all",
+    title: "Subagents",
+    element: Subagents,
+  },
+
+  {
+    path: "/admin/subagents/add",
+    title: "Add New Subagent",
+    element: AddSubagent,
+  },
+  {
+    path: "/admin/subagent/:id",
+    title: "View Subagent",
+    element: ViewSubagent,
+  },
+
+  {
+    path: "/admin/subagent/:id/update",
+    title: "Update Subagent",
+    element: UpdateSubagent,
+  },
+
+  {
+    path: "/admin/employees/all",
+    title: "Employees",
+    element: Employees,
+  },
+
+  {
+    path: "/admin/employees/add",
+    title: "Add New Employee",
+    element: AddNewEmployee,
+  },
+  
 ];
