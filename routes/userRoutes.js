@@ -3,8 +3,10 @@ import {
   changePassword,
   deleteUser,
   getActivityLogs,
+  getAllUsers,
   getMyAttendance,
   getMyProfile,
+  getUserById,
   login,
   logout,
   markAttendance,
@@ -19,7 +21,15 @@ const router = express.Router();
 router.post("/login", login);
 router.get("/logout", isAuthenticated, logout);
 router.post("/register", isAuthenticated, isAuthorized("admin"), register);
-router.put("/user/:id", isAuthenticated, isAuthorized("admin"), singleUpload, updateUser);
+router.get("/users", isAuthenticated, isAuthorized("admin"), getAllUsers);
+router.put(
+  "/user/:id",
+  isAuthenticated,
+  isAuthorized("admin"),
+  singleUpload,
+  updateUser
+);
+router.get("/user/:id", isAuthenticated, getUserById);
 router.delete("/user/:id", isAuthenticated, isAuthorized("admin"), deleteUser);
 router.get("/me", isAuthenticated, getMyProfile);
 router.get("/my-attendance", isAuthenticated, getMyAttendance);

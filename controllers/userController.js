@@ -145,23 +145,49 @@ export const updateUser = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
   let selectedUser = await User.findById(id);
   const file = req.file;
-  const { name, email } = req.body;
+  const {
+    name,
+    fatherName,
+    cnic,
+    mobile,
+    email,
+    password,
+    gender,
+    dob,
+    maritalStatus,
+    religion,
+    nationality,
+    jobTitle,
+    role,
+    salary,
+  } = req.body;
 
   if (!selectedUser) {
     return next(new ErrorHandler("User Not Found", 404));
   }
 
   if (name) selectedUser.name = name;
+  if (fatherName) selectedUser.fatherName = fatherName;
+  if (cnic) selectedUser.cnic = cnic;
+  if (mobile) selectedUser.mobile = mobile;
   if (email) selectedUser.email = email;
+  if (password) selectedUser.password = password;
+  if (gender) selectedUser.gender = gender;
+  if (dob) selectedUser.dob = dob;
+  if (maritalStatus) selectedUser.maritalStatus = maritalStatus;
+  if (religion) selectedUser.religion = religion;
+  if (nationality) selectedUser.nationality = nationality;
+  if (jobTitle) selectedUser.jobTitle = jobTitle;
+  if (role) selectedUser.role = role;
+  if (salary) selectedUser.salary = salary;
 
-  if (selectedUser.avatar.public_id != "temp_id") {
+  if (selectedUser.avatar.public_id !== "temp_id") {
     await cloudinary.v2.uploader.destroy(selectedUser.avatar.public_id);
   }
 
   if (file) {
     let fileUri = getDataUri(file);
     let myCloud = await cloudinary.v2.uploader.upload(fileUri.content);
-
     selectedUser.avatar.public_id = myCloud.public_id;
     selectedUser.avatar.url = myCloud.secure_url;
   }
@@ -171,11 +197,12 @@ export const updateUser = catchAsyncError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "User updated successfully",
+    user: selectedUser,
   });
 });
 
 export const deleteUser = catchAsyncError(async (req, res, next) => {
-  const { id } = req.parms;
+  const { id } = req.params;
   const selectedUser = await User.findById(id);
 
   if (!selectedUser) {
@@ -339,5 +366,22 @@ export const getActivityLogs = catchAsyncError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     logs: todayLogs,
+  });
+});
+
+export const getAllUsers = catchAsyncError(async (req, res, next) => {
+  const users = await User.find();
+  res.status(200).json({
+    success: true,
+    users,
+  });
+});
+
+export const getUserById = catchAsyncError(async (req, res, next) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  res.status(200).json({
+    success: true,
+    user,
   });
 });
