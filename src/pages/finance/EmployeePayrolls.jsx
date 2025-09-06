@@ -4,7 +4,7 @@ import { getAllPayrolls } from "../../redux/actions/payroll"
 import moment from "moment-timezone"
 import { Link } from "react-router-dom"
 import Avatar from "../../components/Avatar"
-import Select from "react-select/base"
+import Select from "react-select"
 import { styles } from "../../select/styles"
 
 const EmployeePayrolls = () => {
@@ -15,7 +15,6 @@ const EmployeePayrolls = () => {
   }, [])
 
   const { payrolls } = useSelector(state => state.payroll)
-  console.log(payrolls)
   return (
     <section className="w-full">
       <div className="w-full bg-white rounded-lg p-[16px] grid grid-cols-3 gap-[8px]">
@@ -52,7 +51,7 @@ const EmployeePayrolls = () => {
             <tr key={index}>
               <td>{p.months[0].month}</td>
               <td>
-                <Avatar image={p.employee.avatar.url} name={p.employee.name} designation={p.employee.role} />
+                <Avatar image={p.employee?.avatar?.url || "https://placehold.co/72x72"} name={p?.employee?.name} designation={p?.employee?.role} />
               </td>
               <td>{p.months[0].basicSalary} PKR</td>
               <td>{p.months[0].commissions.reduce((c, a) => c + a.amount, 0)} PKR</td>
@@ -60,7 +59,7 @@ const EmployeePayrolls = () => {
 
               <td>
                 <div className="actions">
-                  <Link to={`/finance/employee_payrolls/${p.employee._id}`}>View Details</Link>
+                  <Link to={`/finance/employee_payrolls/${p.employee?._id}`}>View Details</Link>
                   <button>Mark Paid</button>
                 </div>
               </td>
