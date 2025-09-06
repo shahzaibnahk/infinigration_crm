@@ -20,7 +20,7 @@ const router = express.Router();
 
 router.post("/login", login);
 router.get("/logout", isAuthenticated, logout);
-router.post("/register", isAuthenticated, isAuthorized("admin"), register);
+router.post("/register", register);
 router.get("/users", isAuthenticated, isAuthorized("admin"), getAllUsers);
 router.put(
   "/user/:id",
